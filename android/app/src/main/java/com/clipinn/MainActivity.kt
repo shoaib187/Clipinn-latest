@@ -7,7 +7,6 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate
 import android.os.Bundle
 import com.zoontek.rnbootsplash.RNBootSplash
 
-
 class MainActivity : ReactActivity() {
 
   /**

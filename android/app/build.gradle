@@ -115,8 +115,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-vision-camera')
-    // implementation 'com.google.android.gms:play-services-code-scanner:16.1.0'
-
+    
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {
