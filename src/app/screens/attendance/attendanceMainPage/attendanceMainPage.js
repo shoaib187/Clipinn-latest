@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -13,19 +13,19 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { COLORS } from '../../../../components/constants/colors';
-import { wp } from '../../../../components/constants/responsiveSize';
-import { FONT } from '../../../../components/constants/font';
+import {COLORS} from '../../../../components/constants/colors';
+import {wp} from '../../../../components/constants/responsiveSize';
+import {FONT} from '../../../../components/constants/font';
 import CheckInButton from '../../../../components/common/checkInButton/checkInButton';
 import SlideToCheckInOut from '../../../../components/common/sliderToCheckInOut/slideToCheckInOut';
 import Button from '../../../../components/common/button/button';
-const { height } = Dimensions.get('window');
+const {height} = Dimensions.get('window');
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const ITEM_HEIGHT = height * 0.2;
 
-export default function AttendanceMainPage({ navigation }) {
+export default function AttendanceMainPage({navigation}) {
   const bottomSheetRef = useRef(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [sheetType, setSheetType] = useState(null); // 'checkIn' | 'checkOut'
@@ -76,7 +76,7 @@ export default function AttendanceMainPage({ navigation }) {
 
     await AsyncStorage.setItem(
       'attendanceStatus',
-      JSON.stringify({ date: today, status }),
+      JSON.stringify({date: today, status}),
     );
 
     if (type === 'checkIn') {
@@ -92,8 +92,7 @@ export default function AttendanceMainPage({ navigation }) {
         flex: 1,
         backgroundColor: COLORS.white,
         paddingTop: StatusBar.currentHeight,
-      }}
-    >
+      }}>
       <StatusBar
         translucent
         animated
@@ -105,7 +104,7 @@ export default function AttendanceMainPage({ navigation }) {
       <Animated.View
         style={[
           styles.backdrop,
-          { position: 'absolute', height: animatedHeight },
+          {position: 'absolute', height: animatedHeight},
         ]}
       />
 
@@ -118,20 +117,24 @@ export default function AttendanceMainPage({ navigation }) {
               Good Morning, Mark your Attendance!
             </Text>
           </View>
-          <Image
+          {/* <Image
             source={{
               uri: 'https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D',
             }}
             style={styles.profileImage}
-          />
+          /> */}
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MarkWithQrCode')}>
+            <Ionicons name="qr-code" size={26} color="#fff" />
+          </TouchableOpacity>
         </View>
         <View style={styles.timeAlign}>
           <Text style={styles.time}>09:00 AM</Text>
           <Text style={styles.date}>Oct 26, 2022 - Wednesday</Text>
           <TouchableOpacity
             style={styles.historyButton}
-            onPress={() => navigation.navigate('AttendanceHistory')}
-          >
+            onPress={() => navigation.navigate('AttendanceHistory')}>
             <Text style={styles.historyButtonText}>View history</Text>
           </TouchableOpacity>
           <CheckInButton onPress={handleCheck} />
@@ -172,7 +175,7 @@ export default function AttendanceMainPage({ navigation }) {
             <Text style={styles.checkLabel}>Total Hours</Text>
           </View>
         </View>
-        <Button title={'View History'} style={{ marginTop: 42 }} />
+        <Button title={'View History'} style={{marginTop: 42}} />
         <RBSheet
           ref={bottomSheetRef}
           height={320}
@@ -181,7 +184,7 @@ export default function AttendanceMainPage({ navigation }) {
           closeDuration={500}
           closeOnPressMask={true}
           dragOnContent={false}
-          customAvoidingViewProps={{ removeClippedSubviews: false }}
+          customAvoidingViewProps={{removeClippedSubviews: false}}
           customStyles={{
             container: {
               padding: 18,
@@ -190,20 +193,17 @@ export default function AttendanceMainPage({ navigation }) {
               alignSelf: 'center',
               bottom: 10,
             },
-          }}
-        >
+          }}>
           <View
             onLayout={e => console.log(e.nativeEvent.layout.height)}
-            style={styles.bottomSheetView}
-          >
+            style={styles.bottomSheetView}>
             {/* Close Button */}
             <TouchableOpacity
               style={styles.closeBtn}
               onPress={async () => {
                 bottomSheetRef.current.close();
                 await AsyncStorage.removeItem('attendanceStatus');
-              }}
-            >
+              }}>
               <Ionicons name="close" size={26} color="#444" />
             </TouchableOpacity>
 
@@ -226,8 +226,7 @@ export default function AttendanceMainPage({ navigation }) {
                 <>
                   Once confirmed, your work hours will start counting from{' '}
                   <Text
-                    style={{ fontFamily: FONT.PoppinsMedium, color: '#27ae60' }}
-                  >
+                    style={{fontFamily: FONT.PoppinsMedium, color: '#27ae60'}}>
                     09:00 AM
                   </Text>
                   .

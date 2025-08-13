@@ -9,6 +9,9 @@ import {
   Alert,
   Platform,
   ActivityIndicator,
+  Modal,
+  Image,
+  Easing,
 } from 'react-native';
 import {
   Camera,
@@ -17,6 +20,9 @@ import {
 } from 'react-native-vision-camera';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {wp} from '../../../../components/constants/responsiveSize';
+import Toast from '../../../../components/common/toast/toast';
 
 const {width, height} = Dimensions.get('window');
 
@@ -25,9 +31,13 @@ export default function QRCodeScanner() {
   const [isActive, setIsActive] = useState(true);
   const [flash, setFlash] = useState('off');
   const [hasPermission, setHasPermission] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [scanStatus, setScanStatus] = useState(''); // 'success' or 'error'
+  const [employeeData, setEmployeeData] = useState(null);
   const device = useCameraDevice('back');
   const camera = useRef(null);
   const scanLineAnim = useRef(new Animated.Value(0)).current;
+  const modalAnim = useRef(new Animated.Value(0)).current;
 
   // Scan line animation
   useEffect(() => {
@@ -36,11 +46,13 @@ export default function QRCodeScanner() {
         Animated.timing(scanLineAnim, {
           toValue: 1,
           duration: 2000,
+          easing: Easing.linear,
           useNativeDriver: true,
         }),
         Animated.timing(scanLineAnim, {
           toValue: 0,
           duration: 2000,
+          easing: Easing.linear,
           useNativeDriver: true,
         }),
       ]),
@@ -65,29 +77,67 @@ export default function QRCodeScanner() {
   const codeScanner = useCodeScanner({
     codeTypes: ['qr', 'ean-13'],
     onCodeScanned: codes => {
-      if (codes.length > 0 && codes[0].value !== scannedData) {
+      if (codes.length > 0 && codes[0].value !== scannedData && isActive) {
         setScannedData(codes[0].value);
         setIsActive(false);
-        Alert.alert(
-          'Scan Successful!',
-          codes[0].value,
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                setScannedData(null);
-                setIsActive(true);
-              },
-            },
-          ],
-          {cancelable: false},
-        );
+
+        // Simulate API call to verify employee
+        setTimeout(() => {
+          // This would be your actual API call in a real app
+          const success = Math.random() > 0.3; // 70% success rate for demo
+          handleScanResult(success, codes[0].value);
+        }, 1000);
       }
     },
   });
 
+  const handleScanResult = (success, data) => {
+    setScanStatus(success ? 'success' : 'error');
+
+    // Mock employee data - replace with actual API response
+    setEmployeeData({
+      id: 'EMP-12345',
+      name: success ? 'John Doe' : 'Invalid QR Code',
+      position: success ? 'Software Developer' : 'N/A',
+      department: success ? 'Engineering' : 'N/A',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+      avatar: success ? 'https://randomuser.me/api/portraits/men/4.jpg' : null,
+    });
+
+    // Animate modal in
+    modalAnim.setValue(0);
+    Animated.spring(modalAnim, {
+      toValue: 1,
+      friction: 5,
+      useNativeDriver: true,
+    }).start();
+
+    setShowResultModal(true);
+  };
+
+  const closeModal = () => {
+    Animated.timing(modalAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowResultModal(false);
+      setScannedData(null);
+      setIsActive(true);
+    });
+  };
+
   const toggleFlash = () => {
     setFlash(flash === 'off' ? 'on' : 'off');
+  };
+
+  const closeScanner = () => {
+    // Navigation.goBack() would be used in a real app with navigation
+    Alert.alert('Close Scanner', 'Would you like to close the scanner?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Yes', onPress: () => console.log('Scanner closed')},
+    ]);
   };
 
   if (!hasPermission) {
@@ -110,6 +160,11 @@ export default function QRCodeScanner() {
     );
   }
 
+  const modalTranslateY = modalAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [300, 0],
+  });
+
   return (
     <View style={styles.container}>
       <Camera
@@ -126,24 +181,21 @@ export default function QRCodeScanner() {
       <View style={styles.overlay}>
         {/* Top Bar */}
         <View style={styles.topBar}>
+          <View style={styles.flashButtonPlaceholder} />
           <Text style={styles.title}>Scan QR Code</Text>
-          <TouchableOpacity onPress={toggleFlash} style={styles.flashButton}>
-            <MaterialIcons
-              name={flash === 'on' ? 'flash-on' : 'flash-off'}
-              size={28}
-              color="#fff"
-            />
+          <TouchableOpacity onPress={closeScanner} style={styles.closeButton}>
+            <Ionicons name="close" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
 
         {/* Scanner Frame */}
         <View style={styles.scannerContainer}>
           <View style={styles.scannerFrame}>
-            {/* Corners */}
-            <View style={[styles.corner, styles.topLeft]} />
-            <View style={[styles.corner, styles.topRight]} />
-            <View style={[styles.corner, styles.bottomLeft]} />
-            <View style={[styles.corner, styles.bottomRight]} />
+            {/* Corners with animation */}
+            <Animated.View style={[styles.corner, styles.topLeft]} />
+            <Animated.View style={[styles.corner, styles.topRight]} />
+            <Animated.View style={[styles.corner, styles.bottomLeft]} />
+            <Animated.View style={[styles.corner, styles.bottomRight]} />
 
             {/* Animated Scan Line */}
             <Animated.View
@@ -163,15 +215,32 @@ export default function QRCodeScanner() {
             />
           </View>
           <Text style={styles.instructionText}>
-            Align QR code within the frame
+            Align QR code within the frame to scan
           </Text>
         </View>
 
         {/* Bottom Bar */}
         <View style={styles.bottomBar}>
-          <Text style={styles.hintText}>Scan QR codes to get information</Text>
+          <TouchableOpacity onPress={toggleFlash} style={styles.lightButton}>
+            <MaterialIcons
+              name={flash === 'on' ? 'highlight' : 'highlight-off'}
+              size={28}
+              color="#fff"
+            />
+            <Text style={styles.lightButtonText}>
+              {flash === 'on' ? 'Light On' : 'Light Off'}
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
+
+      {/* Result Modal */}
+      <Toast
+        message={'Attendance marked Successfully!'}
+        onClose={() => setShowResultModal(false)}
+        title={'Success'}
+        duration={4000}
+      />
     </View>
   );
 }
@@ -179,7 +248,7 @@ export default function QRCodeScanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#00000060',
+    backgroundColor: '#000',
   },
   permissionContainer: {
     flex: 1,
@@ -209,77 +278,77 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: Platform.OS === 'ios' ? 50 : 30,
     paddingBottom: 40,
+    // backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    // zIndex: 1,
   },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+  },
+  closeButton: {
+    padding: 10,
   },
   title: {
     color: '#fff',
     fontSize: 22,
     fontWeight: 'bold',
+    textAlign: 'center',
+    flex: 1,
   },
-  flashButton: {
-    padding: 10,
+  flashButtonPlaceholder: {
+    width: wp(10),
   },
   scannerContainer: {
     alignItems: 'center',
+    // zIndex: 1,
   },
   scannerFrame: {
     width: width * 0.7,
     height: width * 0.7,
-    // borderWidth: 1,
-    // borderColor: 'rgba(255, 255, 255, 0.3)',
-    borderRadius: 20,
     position: 'relative',
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    overflow: 'hidden',
+    // overflow: 'hidden',
+    borderRadius: 20,
+    // zIndex: 1,
   },
   corner: {
     position: 'absolute',
     width: 30,
     height: 30,
-    borderColor: '#4CAF50',
   },
   topLeft: {
     top: 0,
     left: 0,
-    borderTopWidth: 4,
-    borderLeftWidth: 4,
-    borderTopLeftRadius: 20,
-    borderColor: 'red',
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: '#fff',
   },
   topRight: {
     top: 0,
     right: 0,
-    borderTopWidth: 4,
-    borderRightWidth: 4,
-    borderTopRightRadius: 20,
-    borderColor: 'green',
+    borderTopWidth: 3,
+    borderRightWidth: 3,
+    borderColor: '#fff',
   },
-
   bottomLeft: {
     bottom: 0,
     left: 0,
-    borderBottomWidth: 4,
-    borderLeftWidth: 4,
-    borderBottomLeftRadius: 20,
-    borderColor: 'blue',
+    borderBottomWidth: 3,
+    borderLeftWidth: 3,
+    borderColor: '#fff',
   },
   bottomRight: {
     bottom: 0,
     right: 0,
-    borderBottomWidth: 4,
-    borderRightWidth: 4,
-    borderBottomRightRadius: 20,
-    borderColor: 'gold',
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: '#fff',
   },
   scanLine: {
     width: '100%',
-    height: 3,
-    backgroundColor: '#4CAF50',
+    height: 2,
+    backgroundColor: 'green',
     position: 'absolute',
   },
   instructionText: {
@@ -291,8 +360,114 @@ const styles = StyleSheet.create({
   bottomBar: {
     alignItems: 'center',
   },
-  hintText: {
+  lightButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+  },
+  lightButtonText: {
+    color: '#fff',
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  // Modal styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: '#1E1E1E',
+    borderTopLeftRadius: 14,
+    borderTopRightRadius: 14,
+    padding: 25,
+    paddingBottom: 40,
+    alignItems: 'center',
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    padding: 5,
+  },
+  successHeader: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  successTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#4CAF50',
+    marginBottom: 20,
+  },
+  employeeInfo: {
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  employeeName: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  employeeDetail: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 16,
+    marginBottom: 3,
+  },
+  timeContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  timeText: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  dateText: {
     color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 14,
+    fontSize: 16,
+    marginTop: 5,
+  },
+  errorHeader: {
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  errorTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  errorText: {
+    color: 'rgba(255, 255, 255, 0.8)',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  tryAgainButton: {
+    backgroundColor: '#F44336',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    marginTop: 20,
+  },
+  tryAgainText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
