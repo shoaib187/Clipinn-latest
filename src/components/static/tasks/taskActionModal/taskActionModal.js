@@ -4,6 +4,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
+import {wp} from '../../../constants/responsiveSize';
+import {FONT} from '../../../constants/font';
+
 export default function TaskActionModal({
   modalVisible,
   setModalVisible,
@@ -13,7 +16,7 @@ export default function TaskActionModal({
 }) {
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}>
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: '90%',
     backgroundColor: '#fff',
-    borderRadius: 15,
+    borderRadius: 6,
     padding: 20,
   },
   modalCloseButton: {
@@ -126,15 +129,16 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: wp(5),
+    fontFamily: FONT.PoppinsSemiBold,
     color: '#333',
     marginBottom: 10,
   },
   modalDescription: {
-    fontSize: 14,
     color: '#666',
+    fontSize: wp(4),
     marginBottom: 20,
+    fontFamily: FONT.PoppinsRegular,
   },
   modalInfoRow: {
     flexDirection: 'row',
@@ -142,9 +146,11 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   modalInfoText: {
-    fontSize: 14,
+    fontSize: wp(4),
     color: '#666',
     marginLeft: 8,
+    fontFamily: FONT.PoppinsRegular,
+    marginBottom: -4,
   },
   modalActions: {
     flexDirection: 'row',
@@ -155,7 +161,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalActionText: {
-    fontSize: 12,
+    fontSize: wp(3.5),
     marginTop: 5,
+    fontFamily: FONT.PoppinsRegular,
   },
 });

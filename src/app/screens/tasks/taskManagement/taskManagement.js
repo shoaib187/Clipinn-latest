@@ -17,6 +17,9 @@ import TaskActionModal from '../../../../components/static/tasks/taskActionModal
 import AddTaskModal from '../../../../components/static/tasks/addTaskModal/addTaskModal';
 import {COLORS} from '../../../../components/constants/colors';
 import {wp} from '../../../../components/constants/responsiveSize';
+import IconButton from '../../../../components/common/button/iconButton';
+import BackButton from '../../../../components/common/button/backButton';
+import {FONT} from '../../../../components/constants/font';
 
 const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = height * 0.2;
@@ -220,13 +223,29 @@ export default function TaskManagementScreen() {
       <Animated.View
         style={[styles.header, {position: 'absolute', height: animatedHeight}]}
       />
-      <View style={{paddingHorizontal: 14, paddingVertical: 24}}>
-        <Text numberOfLines={2} style={{color: '#fff', fontSize: wp(7)}}>
+      <BackButton
+        style={{position: 'absolute', top: StatusBar.currentHeight}}
+        iconColor={'#fff'}
+      />
+      <View style={{paddingHorizontal: 14, paddingVertical: 24, top: 24}}>
+        <Text
+          numberOfLines={1}
+          style={{
+            color: '#fff',
+            fontSize: wp(7),
+            fontFamily: FONT.PoppinsSemiBold,
+            marginBottom: -4,
+          }}>
           E-Commerce Mobile App
         </Text>
         <Text
-          numberOfLines={2}
-          style={{color: '#fff', marginTop: 6, fontSize: wp(4)}}>
+          numberOfLines={1}
+          style={{
+            color: '#fff',
+            fontSize: wp(4),
+            fontFamily: FONT.PoppinsRegular,
+            marginBottom: -6,
+          }}>
           E-Commerce Mobile App
         </Text>
       </View>
@@ -317,7 +336,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   activeTabButtonText: {
-    color: '#2575fc',
+    color: COLORS.btnColor,
     fontWeight: '600',
   },
   tabIndicator: {
@@ -325,7 +344,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: 3,
     width: '40%',
-    backgroundColor: '#2575fc',
+    backgroundColor: COLORS.btnColor,
     borderRadius: 3,
   },
 });

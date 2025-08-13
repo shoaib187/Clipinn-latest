@@ -7,6 +7,9 @@ import {
   StyleSheet,
 } from 'react-native';
 import React from 'react';
+import {wp} from '../../../constants/responsiveSize';
+import {FONT} from '../../../constants/font';
+import {COLORS} from '../../../constants/colors';
 
 export default function AddTaskModal({
   taskModalVisible,
@@ -83,132 +86,24 @@ export default function AddTaskModal({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  notificationButton: {
-    position: 'relative',
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#F44336',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  tabButton: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 15,
-    position: 'relative',
-  },
-  activeTabButton: {
-    backgroundColor: '#f8f9fa',
-  },
-  tabButtonText: {
-    fontSize: 16,
-    color: '#666',
-    fontWeight: '500',
-  },
-  activeTabButtonText: {
-    color: '#2575fc',
-    fontWeight: '600',
-  },
-  tabIndicator: {
-    position: 'absolute',
-    bottom: 0,
-    height: 3,
-    width: '40%',
-    backgroundColor: '#2575fc',
-    borderRadius: 3,
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalContainer: {
-    width: '90%',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 20,
-  },
-  modalCloseButton: {
-    position: 'absolute',
-    top: 15,
-    right: 15,
-    zIndex: 1,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-  },
-  modalDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 20,
-  },
-  modalInfoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  modalInfoText: {
-    fontSize: 14,
-    color: '#666',
-    marginLeft: 8,
-  },
-  modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  modalActionButton: {
-    alignItems: 'center',
-  },
-  modalActionText: {
-    fontSize: 12,
-    marginTop: 5,
-  },
   taskModalContainer: {
-    width: '90%',
+    width: '92%',
     backgroundColor: '#fff',
     borderRadius: 15,
     padding: 20,
   },
   taskModalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: wp(6),
     color: '#333',
     marginBottom: 20,
     textAlign: 'center',
+    fontFamily: FONT.PoppinsSemiBold,
   },
   inputLabel: {
     fontSize: 14,
@@ -234,19 +129,22 @@ const styles = StyleSheet.create({
   statusOption: {
     paddingHorizontal: 15,
     paddingVertical: 8,
-    borderRadius: 15,
+    borderRadius: 25,
     backgroundColor: '#f5f7fa',
   },
   selectedStatusOption: {
-    backgroundColor: '#2575fc',
+    backgroundColor: COLORS.btnColor,
   },
   statusOptionText: {
-    fontSize: 13,
+    fontSize: wp(3.5),
     color: '#666',
-    fontWeight: '500',
+    fontFamily: FONT.PoppinsRegular,
+    marginBottom: -4,
   },
   selectedStatusOptionText: {
     color: '#fff',
+    fontFamily: FONT.PoppinsRegular,
+    marginBottom: -4,
   },
   taskModalActions: {
     flexDirection: 'row',
@@ -261,20 +159,21 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   cancelButtonText: {
-    fontSize: 15,
+    fontSize: wp(4),
     color: '#666',
-    fontWeight: '500',
+    fontWeight: FONT.PoppinsMedium,
   },
   addButton: {
     flex: 1,
     padding: 12,
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#2575fc',
+    backgroundColor: COLORS.btnColor,
   },
   addButtonText: {
-    fontSize: 15,
+    fontSize: wp(4),
     color: '#fff',
-    fontWeight: '500',
+    fontFamily: FONT.PoppinsMedium,
+    marginBottom: -4,
   },
 });
