@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FONT } from '../../constants/font';
-import { wp } from '../../constants/responsiveSize';
-import { COLORS } from '../../constants/colors';
+import {wp} from '../../../constants/responsiveSize';
+import {FONT} from '../../../constants/font';
 
 const StatsCards = () => {
   const statsData = [
@@ -64,30 +63,27 @@ const StatsCards = () => {
           <LinearGradient
             key={index}
             colors={stat.gradientColors}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.statCard, { borderColor: `${stat.textColor}20` }]}
-          >
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            style={[styles.statCard, {borderColor: `${stat.textColor}20`}]}>
             <View style={styles.statHeader}>
               <View
                 style={[
                   styles.statIconContainer,
-                  { backgroundColor: stat.iconBgColor },
-                ]}
-              >
+                  {backgroundColor: stat.iconBgColor},
+                ]}>
                 <Icon name={stat.iconName} size={16} color={stat.iconColor} />
               </View>
               <Text
                 numberOfLines={2}
-                style={[styles.statTitle, { color: stat.textColor }]}
-              >
+                style={[styles.statTitle, {color: stat.textColor}]}>
                 {stat.title}
               </Text>
             </View>
-            <Text style={[styles.statValue, { color: stat.valueColor }]}>
+            <Text style={[styles.statValue, {color: stat.valueColor}]}>
               {stat.value}
             </Text>
-            <Text style={[styles.statSubtext, { color: stat.subtextColor }]}>
+            <Text style={[styles.statSubtext, {color: stat.subtextColor}]}>
               {stat.subtext}
             </Text>
           </LinearGradient>

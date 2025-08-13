@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,19 +7,17 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import StatsCards from '../../../../components/common/statsCards/statsCards';
+import {COLORS} from '../../../../components/constants/colors';
 import TabHeader from '../../../../components/common/tabHeader/tabHeader';
-import QuickActions from '../../../../components/quickActions/quickActions';
+import StatsCards from '../../../../components/static/home/statsCards/statsCards';
 import Categories from '../../../../components/categories/categories';
-import RecentActivities from '../../../../components/recentActivities/recentActivities';
-import UpcomingEvents from '../../../../components/upcomingEvents/upcomingEvents';
-import { COLORS } from '../../../../components/constants/colors';
-const { width, height } = Dimensions.get('window');
+import QuickActions from '../../../../components/static/home/quickActions/quickActions';
+import RecentActivities from '../../../../components/static/home/recentActivities/recentActivities';
+import UpcomingEvents from '../../../../components/static/home/upcomingEvents/upcomingEvents';
+const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = height * 0.2;
 
-const Home = () => {
-  const navigation = useNavigation();
+const Home = ({navigation}) => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const categories = [
@@ -159,10 +157,7 @@ const Home = () => {
 
       {/* animated, fixed header */}
       <Animated.View
-        style={[
-          styles.header,
-          { position: 'absolute', height: animatedHeight },
-        ]}
+        style={[styles.header, {position: 'absolute', height: animatedHeight}]}
       />
       <TabHeader setFinalHeight={setFinalHeight} />
 
@@ -171,11 +166,10 @@ const Home = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: false },
-        )}
-      >
-        <View style={{ paddingHorizontal: 14 }}>
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}>
+        <View style={{paddingHorizontal: 14}}>
           <StatsCards />
         </View>
         <Categories categories={categories} />

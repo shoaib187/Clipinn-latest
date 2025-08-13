@@ -1,130 +1,3 @@
-// import {
-//   View,
-//   StyleSheet,
-//   PanResponder,
-//   Dimensions,
-//   Animated,
-// } from 'react-native';
-// import React, { useRef } from 'react';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { COLORS } from '../../constants/colors';
-// import { FONT } from '../../constants/font';
-
-// const { width } = Dimensions.get('window');
-
-// const TRACK_SIZE = width - 62;
-// const thumbSize = TRACK_SIZE * 0.15;
-
-// export default function SlideToCheckInOut({
-//   onComplete,
-//   onConfirmCheck,
-//   type,
-// }) {
-//   const panX = useRef(new Animated.Value(0)).current;
-//   const panResponder = useRef(
-//     PanResponder.create({
-//       onMoveShouldSetPanResponder: () => true,
-//       onStartShouldSetPanResponderCapture: () => true,
-//       onPanResponderMove: (_, gestureState) => {
-//         if (gestureState.dx >= 0 && gestureState.dx <= TRACK_SIZE - thumbSize) {
-//           panX.setValue(gestureState.dx);
-//         }
-//       },
-//       onPanResponderRelease: async (_, gestureState) => {
-//         if (gestureState.dx > TRACK_SIZE * 0.6) {
-//           Animated.timing(panX, {
-//             toValue: TRACK_SIZE - thumbSize,
-//             duration: 200,
-//             useNativeDriver: false,
-//           }).start(() => {
-//             handleOnboardingComplete();
-//           });
-//         } else {
-//           Animated.spring(panX, {
-//             toValue: 0,
-//             useNativeDriver: false,
-//           }).start();
-//         }
-//       },
-//     }),
-//   ).current;
-
-//   const handleOnboardingComplete = async () => {
-//     try {
-//       await AsyncStorage.setItem('slideToken', 'USER_CHECKEDIN');
-//       onComplete();
-//       onConfirmCheck(type);
-//     } catch (err) {
-//       console.warn('Failed to save onboarding token', err);
-//     }
-//   };
-
-//   return (
-//     <View
-//       style={[
-//         styles.slideBar,
-//         {
-//           padding: TRACK_SIZE * 0.015,
-//         },
-//       ]}
-//     >
-//       <Animated.View
-//         style={[
-//           { width: thumbSize, height: thumbSize, borderRadius: thumbSize },
-//           styles.sliderThumb,
-//           {
-//             transform: [{ translateX: panX }],
-//           },
-//         ]}
-//         {...panResponder.panHandlers}
-//       >
-//         <Ionicons name="arrow-forward" size={thumbSize * 0.45} />
-//       </Animated.View>
-
-//       <Animated.Text
-//         style={[
-//           styles.loginText,
-//           {
-//             fontSize: TRACK_SIZE * 0.05,
-//             opacity: panX.interpolate({
-//               inputRange: [0, TRACK_SIZE * 0.5],
-//               outputRange: [1, 0],
-//               extrapolate: 'clamp',
-//             }),
-//           },
-//         ]}
-//       >
-//         {`Slide right to ${type}`}
-//       </Animated.Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   slideBar: {
-//     width: '100%',
-//     height: 60,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     borderRadius: 50,
-//     overflow: 'hidden',
-//     backgroundColor: COLORS.btnColor,
-//   },
-//   sliderThumb: {
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     zIndex: 20,
-//     backgroundColor: '#fff',
-//   },
-//   loginText: {
-//     marginLeft: 12,
-//     color: '#fff',
-//     fontFamily: FONT.PoppinsRegular,
-//     marginBottom: -6,
-//   },
-// });
-
 import {
   View,
   Text,
@@ -136,22 +9,18 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { COLORS } from '../../constants/colors';
-import { FONT } from '../../constants/font';
+import {COLORS} from '../../constants/colors';
+import {FONT} from '../../constants/font';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const TRACK_SIZE = width - 62;
 const thumbSize = TRACK_SIZE * 0.15;
 
-export default function SlideToCheckInOut({
-  onComplete,
-  onConfirmCheck,
-  type,
-}) {
+export default function SlideToCheckInOut({onComplete, onConfirmCheck, type}) {
   const panX = useRef(new Animated.Value(0)).current;
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [actionCompleted, setActionCompleted] = useState(false);
@@ -229,19 +98,17 @@ export default function SlideToCheckInOut({
             padding: TRACK_SIZE * 0.015,
             opacity: actionCompleted ? 0.6 : 1,
           },
-        ]}
-      >
+        ]}>
         <Animated.View
           style={[
-            { width: thumbSize, height: thumbSize, borderRadius: thumbSize },
+            {width: thumbSize, height: thumbSize, borderRadius: thumbSize},
             styles.sliderThumb,
             {
-              transform: [{ translateX: panX }],
+              transform: [{translateX: panX}],
               backgroundColor: actionCompleted ? '#ccc' : '#fff',
             },
           ]}
-          {...panResponder.panHandlers}
-        >
+          {...panResponder.panHandlers}>
           <Ionicons
             name="arrow-forward"
             size={thumbSize * 0.45}
@@ -260,8 +127,7 @@ export default function SlideToCheckInOut({
                 extrapolate: 'clamp',
               }),
             },
-          ]}
-        >
+          ]}>
           {actionCompleted
             ? type === 'checkIn'
               ? 'Checked In Successfully'
@@ -275,8 +141,7 @@ export default function SlideToCheckInOut({
         visible={showConfirmation}
         transparent
         animationType="fade"
-        onRequestClose={handleCancel}
-      >
+        onRequestClose={handleCancel}>
         <View style={styles.modalOverlay}>
           <View style={styles.confirmationDialog}>
             <Text style={styles.confirmationTitle}>
@@ -290,14 +155,12 @@ export default function SlideToCheckInOut({
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
-                onPress={handleCancel}
-              >
+                onPress={handleCancel}>
                 <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.confirmButton]}
-                onPress={handleConfirm}
-              >
+                onPress={handleConfirm}>
                 <Text style={styles.buttonText}>Confirm</Text>
               </TouchableOpacity>
             </View>

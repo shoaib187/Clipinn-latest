@@ -14,19 +14,14 @@ import {FONT} from '../../../components/constants/font';
 import Home from '../../screens/home/homeMainPage/home';
 import FacialRecognition from '../../screens/facialRecognition/facialRecognition';
 import {AttendanceStack} from '../attendanceStack/attendanceStack';
+import TaskManagementScreen from '../../screens/tasks/taskManagement/taskManagement';
 
 const IconImage = ({icon}) => <Image source={icon} style={styles.icon} />;
 
 const Tab = createBottomTabNavigator();
 
 // screens where tab bar should be hidden
-const hiddenRoutes = [
-  'FacialRecognition',
-  'MarkWithQrCode',
-  'ProfileDetail',
-  'ChatDetail',
-  '',
-];
+const hiddenRoutes = ['FacialRecognition', 'MarkWithQrCode', 'MarkByLocation'];
 
 const TabNavigation = () => {
   return (
@@ -104,7 +99,7 @@ const TabNavigation = () => {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Attendance" component={AttendanceStack} />
         <Tab.Screen name="FacialRecognition" component={FacialRecognition} />
-        <Tab.Screen name="Tasks" component={TaskHomePage} />
+        <Tab.Screen name="Tasks" component={TaskManagementScreen} />
         <Tab.Screen name="Chats" component={ChatHomePage} />
       </Tab.Navigator>
     </NavigationContainer>

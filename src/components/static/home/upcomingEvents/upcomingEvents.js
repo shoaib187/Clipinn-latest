@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FONT } from '../constants/font';
-import { wp } from '../constants/responsiveSize';
-import { COLORS } from '../constants/colors';
+import {FONT} from '../../../constants/font';
+import {wp} from '../../../constants/responsiveSize';
+import {COLORS} from '../../../constants/colors';
 
 export default function UpcomingEvents() {
   return (
@@ -22,7 +22,7 @@ export default function UpcomingEvents() {
           name="chevron-right"
           size={26}
           color="#9E9E9E"
-          style={{ position: 'absolute', right: 0 }}
+          style={{position: 'absolute', right: 0}}
         />
       </View>
     </View>

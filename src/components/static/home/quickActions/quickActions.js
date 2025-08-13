@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { FONT } from '../constants/font';
-import { wp } from '../constants/responsiveSize';
+import {FONT} from '../../../constants/font';
+import {wp} from '../../../constants/responsiveSize';
 
-export default function QuickActions({ quickActions, navigation }) {
+export default function QuickActions({quickActions, navigation}) {
   return (
     <View style={styles.quickActionsContainer}>
       <Text style={styles.sectionTitle}>Quick Actions</Text>
@@ -13,14 +13,12 @@ export default function QuickActions({ quickActions, navigation }) {
           <TouchableOpacity
             key={action.id}
             onPress={() => navigation.navigate(action.id)}
-            style={[styles.quickActionCard, { backgroundColor: `#f9f9f9` }]}
-          >
+            style={[styles.quickActionCard, {backgroundColor: `#f9f9f9`}]}>
             <View
               style={[
                 styles.quickActionIcon,
-                { backgroundColor: `${action.color}20` },
-              ]}
-            >
+                {backgroundColor: `${action.color}20`},
+              ]}>
               <Icon name={action.icon} size={20} color={action.color} />
             </View>
             <Text style={styles.quickActionText}>{action.title}</Text>

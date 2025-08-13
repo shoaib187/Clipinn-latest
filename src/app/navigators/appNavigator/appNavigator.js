@@ -1,8 +1,9 @@
 React;
 import React from 'react';
-import { TabNavigation } from '../tabNavigation/tabNavigation';
+import {TabNavigation} from '../tabNavigation/tabNavigation';
+
 const AppNavigator = () => {
   return <TabNavigation />;
 };
 
-export { AppNavigator };
+export {AppNavigator};

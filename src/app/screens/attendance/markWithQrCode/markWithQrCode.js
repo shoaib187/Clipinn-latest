@@ -80,7 +80,7 @@ export default function MarkWithQrCode({navigation}) {
       if (codes.length > 0 && codes[0].value !== scannedData && isActive) {
         setScannedData(codes[0].value);
         setIsActive(false);
-
+        console.log('QrCode Scannned: ', codes[0].value);
         // Simulate API call to verify employee
         setTimeout(() => {
           const success = Math.random() > 0.3; // 70% success rate for demo

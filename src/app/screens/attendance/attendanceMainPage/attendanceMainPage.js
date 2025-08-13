@@ -20,7 +20,6 @@ import CheckInButton from '../../../../components/common/checkInButton/checkInBu
 import SlideToCheckInOut from '../../../../components/common/sliderToCheckInOut/slideToCheckInOut';
 import Button from '../../../../components/common/button/button';
 const {height} = Dimensions.get('window');
-
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const ITEM_HEIGHT = height * 0.2;
@@ -61,14 +60,6 @@ export default function AttendanceMainPage({navigation}) {
       openSheet('checkIn');
     }
   };
-
-  // const onConfirmCheck = type => {
-  //   if (type === 'checkIn') {
-  //     setIsCheckedIn(true);
-  //   } else if (type === 'checkOut') {
-  //     setIsCheckedIn(false);
-  //   }
-  // };
 
   const onConfirmCheck = async type => {
     const today = new Date().toISOString().split('T')[0];
@@ -127,6 +118,11 @@ export default function AttendanceMainPage({navigation}) {
           <TouchableOpacity
             onPress={() => navigation.navigate('MarkWithQrCode')}>
             <Ionicons name="qr-code" size={26} color="#fff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate('MarkByLocation')}>
+            <Ionicons name="location" size={26} color="#fff" />
           </TouchableOpacity>
         </View>
         <View style={styles.timeAlign}>

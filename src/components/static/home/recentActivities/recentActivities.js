@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { FONT } from '../constants/font';
-import { wp } from '../constants/responsiveSize';
+import {FONT} from '../../../constants/font';
+import {wp} from '../../../constants/responsiveSize';
 
-export default function RecentActivities({ recentActivities, navigation }) {
+export default function RecentActivities({recentActivities, navigation}) {
   return (
     <View style={styles.activitiesContainer}>
       <Text style={styles.sectionTitle}>Recent Activities</Text>
@@ -14,9 +14,8 @@ export default function RecentActivities({ recentActivities, navigation }) {
             <View
               style={[
                 styles.activityIcon,
-                { backgroundColor: `${activity.color}20` },
-              ]}
-            >
+                {backgroundColor: `${activity.color}20`},
+              ]}>
               <FontAwesome
                 name={activity.icon}
                 size={18}
@@ -34,8 +33,7 @@ export default function RecentActivities({ recentActivities, navigation }) {
         ))}
         <TouchableOpacity
           style={styles.viewAllButton}
-          onPress={() => navigation.navigate('Activities')}
-        >
+          onPress={() => navigation.navigate('Activities')}>
           <Text style={styles.viewAllText}>View All Activities</Text>
         </TouchableOpacity>
       </View>

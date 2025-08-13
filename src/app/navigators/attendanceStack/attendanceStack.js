@@ -21,6 +21,11 @@ const AttendanceStack = () => {
         component={screens.MarkWithQrCode}
         options={{animation: 'fade_from_bottom'}}
       />
+      <Stack.Screen
+        name="MarkByLocation"
+        component={screens.MarkByLocation}
+        options={{animation: 'fade_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };
