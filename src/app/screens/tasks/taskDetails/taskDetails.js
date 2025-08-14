@@ -24,7 +24,7 @@ import {FONT} from '../../../../components/constants/font';
 const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = height * 0.2;
 
-export default function TaskManagementScreen() {
+export default function TaskDetails({navigation}) {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [activeTab, setActiveTab] = useState('Overview');
   const [modalVisible, setModalVisible] = useState(false);
@@ -224,8 +224,9 @@ export default function TaskManagementScreen() {
         style={[styles.header, {position: 'absolute', height: animatedHeight}]}
       />
       <BackButton
-        style={{position: 'absolute', top: StatusBar.currentHeight}}
         iconColor={'#fff'}
+        navigation={navigation}
+        style={{position: 'absolute', top: StatusBar.currentHeight}}
       />
       <View style={{paddingHorizontal: 14, paddingVertical: 24, top: 24}}>
         <Text

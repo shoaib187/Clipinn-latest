@@ -1,12 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import {
   NavigationContainer,
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
+
 import LinearGradient from 'react-native-linear-gradient';
 import {Image, StyleSheet, View} from 'react-native';
-import TaskHomePage from '../../screens/tasks/taskHomePage/taskHomePage';
 import ChatHomePage from '../../screens/chats/chatHomePage/chatHomePage';
 import {COLORS} from '../../../components/constants/colors';
 import {wp} from '../../../components/constants/responsiveSize';
@@ -14,7 +15,7 @@ import {FONT} from '../../../components/constants/font';
 import Home from '../../screens/home/homeMainPage/home';
 import FacialRecognition from '../../screens/facialRecognition/facialRecognition';
 import {AttendanceStack} from '../attendanceStack/attendanceStack';
-import TaskManagementScreen from '../../screens/tasks/taskManagement/taskManagement';
+import {TaskStack} from '../taskStack/taskStack';
 
 const IconImage = ({icon}) => <Image source={icon} style={styles.icon} />;
 
@@ -99,7 +100,7 @@ const TabNavigation = () => {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Attendance" component={AttendanceStack} />
         <Tab.Screen name="FacialRecognition" component={FacialRecognition} />
-        <Tab.Screen name="Tasks" component={TaskManagementScreen} />
+        <Tab.Screen name="Tasks" component={TaskStack} />
         <Tab.Screen name="Chats" component={ChatHomePage} />
       </Tab.Navigator>
     </NavigationContainer>
