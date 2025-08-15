@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
   projectCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
+    padding: 14,
     borderLeftWidth: 4,
     shadowColor: '#ddd',
     shadowOffset: {width: 0, height: 2},

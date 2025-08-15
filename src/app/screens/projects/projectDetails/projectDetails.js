@@ -24,7 +24,7 @@ import {FONT} from '../../../../components/constants/font';
 const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = height * 0.2;
 
-export default function TaskDetails({navigation}) {
+export default function ProjectDetails({navigation}) {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [activeTab, setActiveTab] = useState('Overview');
   const [modalVisible, setModalVisible] = useState(false);

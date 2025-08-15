@@ -15,14 +15,21 @@ import {FONT} from '../../../components/constants/font';
 import Home from '../../screens/home/homeMainPage/home';
 import FacialRecognition from '../../screens/facialRecognition/facialRecognition';
 import {AttendanceStack} from '../attendanceStack/attendanceStack';
-import {TaskStack} from '../taskStack/taskStack';
+import {TaskStack} from '../projectStack/projectStack';
 
-const IconImage = ({icon}) => <Image source={icon} style={styles.icon} />;
+const IconImage = ({icon}) => (
+  <Image source={icon} style={styles.icon} resizeMode="cover" />
+);
 
 const Tab = createBottomTabNavigator();
 
 // screens where tab bar should be hidden
-const hiddenRoutes = ['FacialRecognition', 'MarkWithQrCode', 'MarkByLocation'];
+const hiddenRoutes = [
+  'FacialRecognition',
+  'MarkWithQrCode',
+  'MarkByLocation',
+  'CreateProject',
+];
 
 const TabNavigation = () => {
   return (
@@ -61,21 +68,21 @@ const TabNavigation = () => {
                   break;
                 case 'Attendance':
                   iconName = focused
-                    ? require('../../../../assets/png/tabIcons/checklist-active.png')
-                    : require('../../../../assets/png/tabIcons/checklist-inactive.png');
+                    ? require('../../../../assets/png/tabIcons/calendar-active.png')
+                    : require('../../../../assets/png/tabIcons/calendar-inactive.png');
                   break;
                 case 'FacialRecognition':
                   iconName = require('../../../../assets/png/tabIcons/scan.png');
                   break;
-                case 'Tasks':
+                case 'Projects':
                   iconName = focused
-                    ? require('../../../../assets/png/tabIcons/home-active.png')
-                    : require('../../../../assets/png/tabIcons/home-inactive.png');
+                    ? require('../../../../assets/png/tabIcons/task-active.png')
+                    : require('../../../../assets/png/tabIcons/task-inactive.png');
                   break;
                 case 'Chats':
                   iconName = focused
-                    ? require('../../../../assets/png/tabIcons/home-active.png')
-                    : require('../../../../assets/png/tabIcons/home-inactive.png');
+                    ? require('../../../../assets/png/tabIcons/chat-active.png')
+                    : require('../../../../assets/png/tabIcons/chat-inactive.png');
                   break;
                 default:
                   iconName = 'ellipse';
@@ -100,7 +107,7 @@ const TabNavigation = () => {
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Attendance" component={AttendanceStack} />
         <Tab.Screen name="FacialRecognition" component={FacialRecognition} />
-        <Tab.Screen name="Tasks" component={TaskStack} />
+        <Tab.Screen name="Projects" component={TaskStack} />
         <Tab.Screen name="Chats" component={ChatHomePage} />
       </Tab.Navigator>
     </NavigationContainer>
@@ -120,8 +127,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   icon: {
-    width: wp(8),
-    height: wp(8),
+    width: wp(7),
+    height: wp(7),
     resizeMode: 'contain',
   },
   activeBar: {

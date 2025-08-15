@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   column: {
     width: width * 0.85,
-    backgroundColor: '#f5f7fa',
+    backgroundColor: '#fff',
     borderRadius: 12,
     marginHorizontal: 6,
     padding: 14,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   taskCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f6f6f6',
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
