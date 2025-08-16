@@ -100,10 +100,9 @@ export default function AttendanceMainPage({navigation}) {
       />
 
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.name}>Hey Shabiii,</Text>
+            <Text style={styles.name}>Attendance</Text>
             <Text style={styles.greeting}>
               Good Morning, Mark your Attendance!
             </Text>

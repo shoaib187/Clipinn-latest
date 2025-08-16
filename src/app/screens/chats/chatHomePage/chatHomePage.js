@@ -1,9 +1,11 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import ChatMainPage from '../chatMainPage/chatMainPage'
+import React from 'react';
+import ChatMainPage from '../chatMainPage/chatMainPage';
+import {SafeAreaView} from 'react-native';
 
-export default function ChatHomePage() {
+export default function ChatHomePage({navigation}) {
   return (
-   <ChatMainPage/>
-  )
+    <SafeAreaView style={{flex: 1}}>
+      <ChatMainPage navigation={navigation} />
+    </SafeAreaView>
+  );
 }

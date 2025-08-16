@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+import {COLORS} from '../../constants/colors';
 
 export default function AskQuestion({questions, setQuestions}) {
   // const [questions, setQuestions] = useState([]);
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 8,
-    backgroundColor: '#4A90E2',
+    backgroundColor: COLORS.btnColor,
     justifyContent: 'center',
     alignItems: 'center',
   },

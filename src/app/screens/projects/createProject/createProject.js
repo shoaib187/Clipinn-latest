@@ -85,7 +85,11 @@ export default function CreateProject({navigation}) {
       <KeyboardAvoidingView
         // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-        <Animated.View style={[styles.header, {opacity: fadeAnim}]}>
+        <Animated.View
+          style={[
+            styles.header,
+            // { opacity: fadeAnim }
+          ]}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.backButton}>
