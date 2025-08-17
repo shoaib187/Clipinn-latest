@@ -82,14 +82,12 @@ export default function AttendanceMainPage({navigation}) {
       style={{
         flex: 1,
         backgroundColor: COLORS.white,
-        paddingTop: StatusBar.currentHeight,
+        // paddingTop: StatusBar.currentHeight,
       }}>
       <StatusBar
-        translucent
-        animated
         backgroundColor={COLORS.black}
-        barStyle={'light-content'}
-        showHideTransition={'fade'}
+        barStyle="light-content"
+        animated
       />
 
       <Animated.View
@@ -327,12 +325,9 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     position: 'absolute',
-    top: StatusBar.currentHeight || 0,
     left: 0,
     right: 0,
     backgroundColor: COLORS.black,
-    // zIndex: 1,
-    // justifyContent: 'center',
     paddingHorizontal: 14,
   },
   historyButton: {

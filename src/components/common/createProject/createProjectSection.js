@@ -27,11 +27,6 @@ export default function CreateProjectSection({
   priority,
   setPriority,
 }) {
-  // const [projectName, setProjectName] = useState('');
-  // const [description, setDescription] = useState('');
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(new Date());
-  // const [priority, setPriority] = useState('medium');
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 

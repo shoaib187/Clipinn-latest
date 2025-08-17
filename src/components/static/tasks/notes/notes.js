@@ -1,508 +1,388 @@
+import React, {useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
   StyleSheet,
+  Modal,
+  TextInput,
+  FlatList,
+  Animated,
+  Easing,
+  Dimensions,
 } from 'react-native';
-import React from 'react';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from 'react-native-linear-gradient';
+import {COLORS} from '../../../constants/colors';
+import {wp} from '../../../constants/responsiveSize';
+
 const {width} = Dimensions.get('window');
 
 export default function Notes() {
-  return (
-    <ScrollView style={styles.tabContent}>
-      <View style={styles.notesPlaceholder}>
-        <MaterialIcons name="note-add" size={60} color="#e0e0e0" />
-        <Text style={styles.notesPlaceholderText}>No notes yet</Text>
-        <TouchableOpacity style={styles.addNoteButton}>
-          <Text style={styles.addNoteButtonText}>Add Note</Text>
+  const [notes, setNotes] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newNoteTitle, setNewNoteTitle] = useState('');
+  const [newNoteContent, setNewNoteContent] = useState('');
+  const [activeColor, setActiveColor] = useState('#5E8BFF');
+  const fadeAnim = useState(new Animated.Value(0))[0];
+
+  const colors = ['#5E8BFF', '#FF7675', '#6C5CE7', '#00B894', '#FD79A8'];
+
+  const handleAddNote = () => {
+    if (newNoteTitle.trim() === '' && newNoteContent.trim() === '') return;
+
+    const newNote = {
+      id: Date.now().toString(),
+      title: newNoteTitle.trim() || 'Untitled',
+      content: newNoteContent.trim(),
+      date: new Date().toLocaleDateString(),
+      color: activeColor,
+    };
+
+    setNotes(prev => [newNote, ...prev]);
+    setNewNoteTitle('');
+    setNewNoteContent('');
+    closeModal();
+  };
+
+  const openModal = () => {
+    setModalVisible(true);
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeModal = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 200,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: true,
+    }).start(() => setModalVisible(false));
+  };
+
+  const renderNote = ({item}) => (
+    <LinearGradient
+      colors={[item.color, `${item.color}`]}
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 1}}
+      style={styles.noteCard}>
+      <Text style={styles.noteTitle}>{item.title}</Text>
+      {item.content ? (
+        <Text style={styles.noteContent}>{item.content}</Text>
+      ) : null}
+      <View style={styles.noteFooter}>
+        <Text style={styles.noteDate}>{item.date}</Text>
+        <TouchableOpacity>
+          <Ionicons
+            name="ellipsis-horizontal"
+            size={18}
+            color="rgba(255,255,255,0.7)"
+          />
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </LinearGradient>
+  );
+
+  return (
+    <LinearGradient colors={['#f8f9fa', '#eef2f5']} style={styles.container}>
+      {notes.length === 0 ? (
+        <ScrollView contentContainerStyle={styles.notesPlaceholder}>
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  scale: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [1, 1.1],
+                  }),
+                },
+              ],
+            }}>
+            <MaterialIcons name="note-add" size={80} color="#d1d8e0" />
+          </Animated.View>
+          <Text style={styles.notesPlaceholderText}>
+            Your notes will appear here
+          </Text>
+          <TouchableOpacity style={styles.addNoteButton} onPress={openModal}>
+            <LinearGradient
+              colors={['#5E8BFF', '#3B6AFF']}
+              style={styles.gradientButton}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}>
+              <Text style={styles.addNoteButtonText}>Create First Note</Text>
+              <MaterialIcons name="add" size={20} color="#fff" />
+            </LinearGradient>
+          </TouchableOpacity>
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={notes}
+          keyExtractor={item => item.id}
+          renderItem={renderNote}
+          contentContainerStyle={{padding: 15}}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+
+      {/* Floating Add Button */}
+      {notes.length > 0 && (
+        <TouchableOpacity onPress={openModal} style={styles.fab}>
+          <MaterialIcons name="add" size={28} color="#fff" />
+        </TouchableOpacity>
+      )}
+
+      {/* Add Note Modal */}
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={closeModal}>
+        <Animated.View style={[styles.modalOverlay, {opacity: fadeAnim}]}>
+          <TouchableOpacity
+            style={styles.modalBackdrop}
+            activeOpacity={1}
+            onPress={closeModal}
+          />
+          <Animated.View
+            style={[
+              styles.modalContainer,
+              {
+                transform: [
+                  {
+                    translateY: fadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [50, 0],
+                    }),
+                  },
+                ],
+              },
+            ]}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>New Note</Text>
+              <TouchableOpacity onPress={closeModal}>
+                <Ionicons name="close" size={24} color="#666" />
+              </TouchableOpacity>
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              placeholderTextColor="#999"
+              value={newNoteTitle}
+              onChangeText={setNewNoteTitle}
+            />
+            <TextInput
+              style={[styles.input, styles.descriptionInput]}
+              placeholder="Start writing..."
+              placeholderTextColor="#999"
+              value={newNoteContent}
+              onChangeText={setNewNoteContent}
+              multiline
+            />
+
+            <View style={styles.colorPicker}>
+              {colors.map(color => (
+                <TouchableOpacity
+                  key={color}
+                  style={[
+                    styles.colorOption,
+                    {backgroundColor: color},
+                    activeColor === color && styles.activeColor,
+                  ]}
+                  onPress={() => setActiveColor(color)}
+                />
+              ))}
+            </View>
+
+            <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
+              <LinearGradient
+                colors={['#5E8BFF', '#3B6AFF']}
+                style={styles.gradientButton}
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}>
+                <Text style={styles.addButtonText}>Save Note</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
+        </Animated.View>
+      </Modal>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 20,
-    paddingTop: 50,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  headerTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  notificationButton: {
-    position: 'relative',
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#F44336',
-  },
-  tabBar: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  tabButton: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: 15,
-    position: 'relative',
-  },
-  activeTabButton: {
-    backgroundColor: '#f8f9fa',
-  },
-  tabButtonText: {
-    fontSize: 16,
-    color: '#666',
-    fontWeight: '500',
-  },
-  activeTabButtonText: {
-    color: '#2575fc',
-    fontWeight: '600',
-  },
-  tabIndicator: {
-    position: 'absolute',
-    bottom: 0,
-    height: 3,
-    width: '40%',
-    backgroundColor: '#2575fc',
-    borderRadius: 3,
-  },
-  tabContent: {
-    flex: 1,
-    padding: 15,
-  },
-  tasksTab: {
-    flex: 1,
-    paddingVertical: 15,
-  },
-  projectCard: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    marginBottom: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  gradient: {
-    padding: 20,
-  },
-  projectTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 5,
-  },
-  projectDescription: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-    marginBottom: 20,
-  },
-  progressContainer: {
-    marginBottom: 20,
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    borderRadius: 4,
-    overflow: 'hidden',
-    marginBottom: 5,
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: '#fff',
-    borderRadius: 4,
-  },
-  progressText: {
-    fontSize: 12,
-    color: '#fff',
-    textAlign: 'right',
-  },
-  deadlineContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  deadlineText: {
-    fontSize: 14,
-    color: '#fff',
-    marginLeft: 8,
-    marginRight: 12,
-  },
-  timeRemainingBadge: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  overdueBadge: {
-    backgroundColor: 'rgba(255,99,71,0.7)',
-  },
-  timeRemainingText: {
-    fontSize: 12,
-    color: '#fff',
-    fontWeight: '500',
-  },
-  section: {
-    marginBottom: 25,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  viewAllText: {
-    fontSize: 14,
-    color: '#2575fc',
-  },
-  memberCard: {
-    width: 140,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginRight: 15,
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  memberAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginBottom: 10,
-  },
-  memberName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 3,
-    textAlign: 'center',
-  },
-  memberRole: {
-    fontSize: 12,
-    color: '#666',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
-  messageButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(37, 117, 252, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  recentTaskCard: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-  },
-  taskStatusIndicator: {
-    width: 4,
-    height: 40,
-    backgroundColor: '#2575fc',
-    borderRadius: 2,
-    marginRight: 12,
-  },
-  recentTaskContent: {
-    flex: 1,
-  },
-  recentTaskTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 5,
-  },
-  recentTaskMeta: {
-    flexDirection: 'row',
-  },
-  recentTaskStatus: {
-    fontSize: 12,
-    color: '#666',
-    marginRight: 15,
-  },
-  recentTaskAssignee: {
-    fontSize: 12,
-    color: '#666',
-  },
-  recentTaskAction: {
-    padding: 5,
-  },
-  column: {
-    width: width * 0.85,
-    backgroundColor: '#f5f7fa',
-    borderRadius: 12,
-    marginHorizontal: 10,
-    padding: 15,
-  },
-  columnHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  columnTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginRight: 10,
-  },
-  columnCount: {
-    fontSize: 14,
-    color: '#666',
-    marginRight: 'auto',
-  },
-  addTaskButton: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(37, 117, 252, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  taskCard: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-  },
-  taskCardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  taskTitle: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-  },
-  taskDescription: {
-    fontSize: 13,
-    color: '#666',
-    marginBottom: 12,
-  },
-  taskFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  assigneeBadge: {
-    backgroundColor: 'rgba(37, 117, 252, 0.1)',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  assigneeText: {
-    fontSize: 12,
-    color: '#2575fc',
-    fontWeight: '500',
-  },
-  taskDeadline: {
-    fontSize: 12,
-    color: '#666',
-  },
-  emptyColumn: {
-    alignItems: 'center',
-    paddingVertical: 30,
-  },
-  emptyColumnText: {
-    fontSize: 14,
-    color: '#999',
-    marginTop: 10,
   },
   notesPlaceholder: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 60,
   },
   notesPlaceholderText: {
-    fontSize: 16,
-    color: '#999',
-    marginTop: 15,
-    marginBottom: 25,
+    fontSize: 18,
+    color: '#a4b0be',
+    marginTop: 20,
+    marginBottom: 30,
+    fontFamily: 'sans-serif-medium',
   },
   addNoteButton: {
-    backgroundColor: '#2575fc',
-    paddingHorizontal: 25,
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    paddingHorizontal: 30,
     paddingVertical: 12,
     borderRadius: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addNoteButtonText: {
     color: '#fff',
     fontWeight: '600',
+    fontSize: 16,
+    marginRight: 8,
   },
+
+  noteCard: {
+    padding: 20,
+    borderRadius: 15,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    // elevation: 5,
+  },
+  noteTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  noteContent: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.9)',
+    marginBottom: 15,
+    lineHeight: 20,
+  },
+  noteFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  noteDate: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.7)',
+  },
+
+  fab: {
+    position: 'absolute',
+    bottom: 14,
+    right: 14,
+    borderRadius: 28,
+    shadowColor: '#5E8BFF',
+    shadowOffset: {width: 0, height: 5},
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+    backgroundColor: COLORS.btnColor,
+    width: wp(12),
+    height: wp(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // fabGradient: {
+  //   width: 56,
+  //   height: 56,
+  //   borderRadius: 28,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  // },
+
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalContainer: {
-    width: '90%',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 20,
-  },
-  modalCloseButton: {
+  modalBackdrop: {
     position: 'absolute',
-    top: 15,
-    right: 15,
-    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
+  modalContainer: {
+    width: width - 40,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 10,
   },
-  modalDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 20,
-  },
-  modalInfoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  modalInfoText: {
-    fontSize: 14,
-    color: '#666',
-    marginLeft: 8,
-  },
-  modalActions: {
+  modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  modalActionButton: {
     alignItems: 'center',
+    marginBottom: 20,
   },
-  modalActionText: {
-    fontSize: 12,
-    marginTop: 5,
-  },
-  taskModalContainer: {
-    width: '90%',
-    backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 20,
-  },
-  taskModalTitle: {
-    fontSize: 18,
+  modalTitle: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
   },
   input: {
     backgroundColor: '#f5f7fa',
-    borderRadius: 10,
-    padding: 12,
+    borderRadius: 12,
+    padding: 16,
     marginBottom: 15,
-    fontSize: 15,
+    fontSize: 16,
+    color: '#333',
   },
   descriptionInput: {
-    height: 80,
+    height: 120,
     textAlignVertical: 'top',
   },
-  statusSelector: {
+  colorPicker: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 25,
   },
-  statusOption: {
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 15,
-    backgroundColor: '#f5f7fa',
+  colorOption: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
-  selectedStatusOption: {
-    backgroundColor: '#2575fc',
-  },
-  statusOptionText: {
-    fontSize: 13,
-    color: '#666',
-    fontWeight: '500',
-  },
-  selectedStatusOptionText: {
-    color: '#fff',
-  },
-  taskModalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cancelButton: {
-    flex: 1,
-    padding: 12,
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#f5f7fa',
-    marginRight: 10,
-  },
-  cancelButtonText: {
-    fontSize: 15,
-    color: '#666',
-    fontWeight: '500',
+  activeColor: {
+    borderWidth: 3,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
   },
   addButton: {
-    flex: 1,
-    padding: 12,
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#2575fc',
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   addButtonText: {
-    fontSize: 15,
     color: '#fff',
-    fontWeight: '500',
+    fontWeight: '600',
+    fontSize: 16,
+    textAlign: 'center',
+    paddingVertical: 14,
   },
 });

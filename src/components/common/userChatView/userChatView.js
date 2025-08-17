@@ -1,12 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {formatTime} from '../../../utils/common/services/services';
 import {COLORS} from '../../constants/colors';
-import {wp} from '../../constants/responsiveSize';
-import {FONT} from '../../constants/font';
 
-export default function ChatItem({item, onPress}) {
+export default function UserChatView({item, onPress}) {
   return (
     <TouchableOpacity style={styles.chatItem} onPress={onPress}>
       <View style={styles.avatarContainer}>
@@ -20,9 +16,9 @@ export default function ChatItem({item, onPress}) {
           <Text style={styles.chatName} numberOfLines={1}>
             {item.user.name}
           </Text>
-          <Text style={styles.chatTime}>
+          {/* <Text style={styles.chatTime}>
             {formatTime(item.lastMessage.createdAt)}
-          </Text>
+          </Text> */}
         </View>
 
         <View style={styles.chatFooter}>
@@ -38,19 +34,17 @@ export default function ChatItem({item, onPress}) {
                 item.unreadCount > 0 && styles.unreadMessage,
               ]}
               numberOfLines={1}>
-              {item.isGroup
-                ? item.lastMessage.text.split(':').slice(1).join(':')
-                : item.lastMessage.text}
+              Hey! What's going on?
             </Text>
           </View>
 
-          {item.unreadCount > 0 ? (
+          {/* {item.unreadCount > 0 ? (
             <View style={styles.unreadBadge}>
               <Text style={styles.unreadCount}>{item.unreadCount}</Text>
             </View>
           ) : (
             <Ionicons name="checkmark-done" size={18} color="#999" />
-          )}
+          )} */}
         </View>
       </View>
     </TouchableOpacity>
@@ -150,14 +144,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   chatName: {
-    fontSize: wp(4.2),
+    fontSize: 18,
+    fontWeight: '600',
     color: COLORS.btnColor,
     maxWidth: '70%',
-    fontFamily: FONT.PoppinsMedium,
-    marginBottom: -6,
   },
   chatTime: {
-    fontSize: wp(3.5),
+    fontSize: 12,
     color: '#999',
   },
   chatFooter: {
@@ -171,18 +164,15 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   senderName: {
-    fontSize: wp(3.6),
+    fontSize: 14,
     color: COLORS.btnColor,
-    fontFamily: FONT.PoppinsMedium,
+    fontWeight: 'bold',
     marginRight: 4,
-    marginTop: -1,
   },
   lastMessage: {
-    fontSize: wp(3.6),
-    fontFamily: FONT.PoppinsRegular,
+    fontSize: 14,
     color: '#777',
     flex: 1,
-    marginBottom: -4,
   },
   unreadMessage: {
     color: '#333',

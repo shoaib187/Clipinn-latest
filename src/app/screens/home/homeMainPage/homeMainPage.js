@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,9 +11,9 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { COLORS } from '../../../../components/constants/colors';
-import { wp } from '../../../../components/constants/responsiveSize';
-import { FONT } from '../../../../components/constants/font';
+import {COLORS} from '../../../../components/constants/colors';
+import {wp} from '../../../../components/constants/responsiveSize';
+import {FONT} from '../../../../components/constants/font';
 import Button from '../../../../components/common/button/button';
 import Donut from '../../../../components/common/donut/donut';
 // import CheckInOutSheet from '../../../../components/common/bottomsheet/bottomSheet';
@@ -23,15 +23,13 @@ export default function HomeMainPage() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
+        backgroundColor={COLORS.black}
+        barStyle="light-content"
         animated
-        translucent
-        backgroundColor={COLORS.btnColor}
-        barStyle={'light-content'}
       />
       <View
         onLayout={e => console.log(e.nativeEvent.layout.height)}
-        style={styles.animatedWrapper}
-      >
+        style={styles.animatedWrapper}>
         <View style={styles.headerWrapper}>
           <View style={styles.left}>
             <Image
@@ -63,7 +61,7 @@ export default function HomeMainPage() {
                 key={index}
                 style={[
                   styles.bar,
-                  index !== array.length - 1 && { marginRight: 4 },
+                  index !== array.length - 1 && {marginRight: 4},
                   {
                     backgroundColor: isTodayOrBefore ? COLORS.btnColor : '#eee',
                   },
@@ -97,25 +95,24 @@ export default function HomeMainPage() {
 
             <TouchableOpacity
               onPress={() => setIsCheckIn(false)}
-              style={[styles.checkInButton, styles.checkOutButton]}
-            >
+              style={[styles.checkInButton, styles.checkOutButton]}>
               <Octicons
                 name="sign-out"
                 size={18}
                 color="#fff"
                 style={styles.icon}
               />
-              <Text style={[styles.btnText, { color: COLORS.white }]}>
+              <Text style={[styles.btnText, {color: COLORS.white}]}>
                 Check Out
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
           <Button
-            textStyle={{ top: 0, fontSize: wp(4) }}
+            textStyle={{top: 0, fontSize: wp(4)}}
             onPress={() => setIsCheckIn(true)}
             title="Check In"
-            style={{ borderRadius: 6, height: 44, marginTop: 12 }}
+            style={{borderRadius: 6, height: 44, marginTop: 12}}
             iconName="log-in-outline"
           />
         )}
@@ -127,20 +124,16 @@ export default function HomeMainPage() {
             justifyContent: 'space-between',
             gap: 12,
             marginTop: 16,
-          }}
-        >
+          }}>
           <View style={styles.card}>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
-            >
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
               <Fontisto name="clock" size={20} />
               <Text
                 style={{
                   fontFamily: FONT.PoppinsRegular,
                   top: 3,
                   fontSize: wp(3.6),
-                }}
-              >
+                }}>
                 Working hours
               </Text>
             </View>
@@ -149,23 +142,19 @@ export default function HomeMainPage() {
                 fontFamily: FONT.PoppinsSemiBold,
                 top: 3,
                 fontSize: wp(4.6),
-              }}
-            >
+              }}>
               01:00 Hrs
             </Text>
           </View>
           <View style={styles.card}>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
-            >
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
               <Fontisto name="clock" size={20} />
               <Text
                 style={{
                   fontFamily: FONT.PoppinsRegular,
                   top: 3,
                   fontSize: wp(3.6),
-                }}
-              >
+                }}>
                 Working hours
               </Text>
             </View>
@@ -174,8 +163,7 @@ export default function HomeMainPage() {
                 fontFamily: FONT.PoppinsSemiBold,
                 top: 3,
                 fontSize: wp(4.6),
-              }}
-            >
+              }}>
               01:00 Hrs
             </Text>
           </View>
@@ -201,7 +189,7 @@ export default function HomeMainPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
   },
   animatedWrapper: {
     backgroundColor: COLORS.btnColor,

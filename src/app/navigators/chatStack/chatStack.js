@@ -10,6 +10,11 @@ const ChatStack = () => {
       screenOptions={{headerShown: false, animation: 'ios_from_right'}}>
       <Stack.Screen name="ChatHomePage" component={screens.ChatHomePage} />
       <Stack.Screen name="ChatInbox" component={screens.ChatInbox} />
+      <Stack.Screen
+        name="NewChat"
+        component={screens.NewChat}
+        options={{animation: 'fade_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };

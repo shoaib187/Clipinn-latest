@@ -1,3 +1,4 @@
+import ImagePicker from 'react-native-image-crop-picker';
 export const formatDate = date => {
   return date.toLocaleDateString('en-US', {
     month: 'short',
@@ -19,6 +20,22 @@ export const formatTime = date => {
     return date.toLocaleDateString([], {weekday: 'short'});
   } else {
     return date.toLocaleDateString([], {month: 'short', day: 'numeric'});
+  }
+};
+
+export const imagePicker = async () => {
+  try {
+    const image = await ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+      mediaType: 'photo',
+      compressImageQuality: 0.8,
+    });
+    return image;
+  } catch (error) {
+    console.error('Image picker error:', error);
+    throw error;
   }
 };
 
@@ -123,34 +140,6 @@ export const users = [
     isOnline: false,
     unreadCount: 0,
   },
-];
-
-export const user = [
-  {
-    id: '1',
-    name: 'Shoaib',
-    image:
-      'https://media.istockphoto.com/id/1748505237/photo/man-holding-mobile-phone-reading-text-message-communication-online-isolated-on-blue-background.jpg?s=612x612&w=0&k=20&c=xHgjX-3b1i38PKHPLzOSNsntb876WrvDUjxOzSRQY1Y=',
-  },
-  {
-    id: '2',
-    name: 'Atif ',
-    image:
-      'https://media.istockphoto.com/id/1748510665/photo/happy-african-american-man-wearing-casual-clothes-dancing-having-fun-isolated-on-blue.jpg?s=612x612&w=0&k=20&c=J6oUg_A51fszDoB30SsUSsEkQmw2Qbp3ty15Mh_xcUA=',
-  },
-  {
-    id: '3',
-    name: 'Hawa',
-    image:
-      'https://media.istockphoto.com/id/921464396/photo/african-family-spending-time-together.jpg?s=612x612&w=0&k=20&c=1O6XYBrz6n1ItTXR4pQQubHchzM7bXpqxH50nlLTdbg=',
-  },
-  {
-    id: '4',
-    name: 'Norii',
-    image:
-      'https://media.istockphoto.com/id/950791104/photo/young-man-with-nigeria-flag-painted-on-his-face.jpg?s=612x612&w=0&k=20&c=cVVXba3FG9CJxlF5OVOaMnPDcCOrNtFtAfOGEhEviSU=',
-  },
-  // { id: '5', name: 'Ayesha', image: 'https://i.pravatar.cc/150?img=2' },
 ];
 
 export const userProfile =

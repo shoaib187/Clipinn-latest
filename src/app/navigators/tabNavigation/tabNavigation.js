@@ -29,6 +29,7 @@ const hiddenRoutes = [
   'MarkByLocation',
   'CreateProject',
   'ChatInbox',
+  'NewChat',
 ];
 
 const TabNavigation = () => {

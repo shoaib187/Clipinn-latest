@@ -448,6 +448,11 @@ export default function ProjectMainPage({navigation}) {
 
   return (
     <View style={styles.container}>
+      <StatusBar
+        backgroundColor={COLORS.black}
+        barStyle="light-content"
+        animated
+      />
       <Animated.View
         style={[
           styles.header,
@@ -526,7 +531,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
   },
 
   header: {

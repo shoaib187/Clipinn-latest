@@ -81,10 +81,8 @@ export default function CreateProject({navigation}) {
   }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
-      <KeyboardAvoidingView
-        // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView style={styles.container}>
         <Animated.View
           style={[
             styles.header,

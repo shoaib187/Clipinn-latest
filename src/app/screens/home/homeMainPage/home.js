@@ -149,10 +149,9 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar
-        translucent
         backgroundColor={COLORS.black}
-        animated
         barStyle="light-content"
+        animated
       />
 
       {/* animated, fixed header */}
@@ -184,12 +183,12 @@ const Home = ({navigation}) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: COLORS.white,
-    paddingTop: StatusBar.currentHeight || 0,
+    // backgroundColor: COLORS.white,
+    // paddingTop: StatusBar.currentHeight || 0,
   },
   header: {
     position: 'absolute',
-    top: StatusBar.currentHeight || 0,
+    // top: StatusBar.currentHeight || 0,
     left: 0,
     right: 0,
     backgroundColor: COLORS.black,

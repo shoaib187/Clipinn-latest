@@ -8,7 +8,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -16,19 +16,106 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {wp} from '../../../constants/responsiveSize';
 import {FONT} from '../../../constants/font';
+import TaskActionModal from '../taskActionModal/taskActionModal';
+import AddTaskModal from '../addTaskModal/addTaskModal';
 
 const {width} = Dimensions.get('window');
 
-export default function RemainingTasks({
-  tasks,
-  setNewTaskColumn,
-  setTaskModalVisible,
-  setSelectedTask,
-  setModalVisible,
-}) {
+export default function RemainingTasks() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [taskModalVisible, setTaskModalVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [newTaskColumn, setNewTaskColumn] = useState('To Do');
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const [newTaskDescription, setNewTaskDescription] = useState('');
+
+  const [tasks, setTasks] = useState({
+    'To Do': [
+      {
+        id: '1',
+        title: 'Design Homepage',
+        description: 'Create wireframes and mockups',
+        assignedTo: 'John',
+        deadline: '2023-06-15',
+      },
+      {
+        id: '2',
+        title: 'User Research',
+        description: 'Conduct interviews with 5 users',
+        assignedTo: 'Sarah',
+        deadline: '2023-06-20',
+      },
+    ],
+    'In Progress': [
+      {
+        id: '3',
+        title: 'API Integration',
+        description: 'Connect frontend to backend services',
+        assignedTo: 'Mike',
+        deadline: '2023-06-18',
+      },
+    ],
+    Done: [
+      {
+        id: '4',
+        title: 'Project Setup',
+        description: 'Initialize repository and CI/CD',
+        assignedTo: 'Emma',
+        deadline: '2023-06-10',
+      },
+    ],
+  });
+
+  const handleAddTask = () => {
+    if (newTaskTitle.trim() === '') return;
+
+    const newTask = {
+      id: Date.now().toString(),
+      title: newTaskTitle,
+      description: newTaskDescription,
+      assignedTo: 'Unassigned',
+      deadline: '2023-06-30',
+    };
+
+    setTasks(prev => ({
+      ...prev,
+      [newTaskColumn]: [...prev[newTaskColumn], newTask],
+    }));
+
+    setNewTaskTitle('');
+    setNewTaskDescription('');
+    setTaskModalVisible(false);
+  };
+
+  const handleTaskAction = (action, taskId, column) => {
+    if (action === 'delete') {
+      setTasks(prev => ({
+        ...prev,
+        [column]: prev[column].filter(task => task.id !== taskId),
+      }));
+    } else if (action === 'move') {
+      const taskToMove = tasks[column].find(task => task.id === taskId);
+      if (!taskToMove) return;
+
+      let newColumn;
+      if (column === 'To Do') newColumn = 'In Progress';
+      else if (column === 'In Progress') newColumn = 'Done';
+      else return;
+
+      setTasks(prev => ({
+        ...prev,
+        [column]: prev[column].filter(task => task.id !== taskId),
+        [newColumn]: [...prev[newColumn], taskToMove],
+      }));
+    }
+  };
+
   return (
     <View style={styles.tasksTab}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        horizontal
+        scrollEventThrottle={16}
+        showsHorizontalScrollIndicator={false}>
         {Object.keys(tasks).map(column => (
           <View key={column} style={styles.column}>
             <View style={styles.columnHeader}>
@@ -42,12 +129,7 @@ export default function RemainingTasks({
                   setNewTaskColumn(column);
                   setTaskModalVisible(true);
                 }}>
-                <AntDesign
-                  name="plus"
-                  size={16}
-                  color="#2575fc"
-                  // color="#fff"
-                />
+                <AntDesign name="plus" size={16} color="#2575fc" />
               </TouchableOpacity>
             </View>
 
@@ -85,9 +167,31 @@ export default function RemainingTasks({
           </View>
         ))}
       </ScrollView>
+
+      {/* Task Action Modal */}
+      <TaskActionModal
+        tasks={tasks}
+        modalVisible={modalVisible}
+        selectedTask={selectedTask}
+        setModalVisible={setModalVisible}
+        handleTaskAction={handleTaskAction}
+      />
+
+      {/* Add Task Modal */}
+      <AddTaskModal
+        taskModalVisible={taskModalVisible}
+        setTaskModalVisible={setTaskModalVisible}
+        newTaskTitle={newTaskTitle}
+        setNewTaskTitle={setNewTaskTitle}
+        newTaskDescription={newTaskDescription}
+        setNewTaskDescription={setNewTaskDescription}
+        handleAddTask={handleAddTask}
+        tasks={tasks}
+      />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   tasksTab: {
     flex: 1,
@@ -123,7 +227,6 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    // backgroundColor: COLORS.btnColor,
     backgroundColor: 'rgba(37, 117, 252, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -148,7 +251,6 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     color: '#333',
     fontFamily: FONT.PoppinsMedium,
-    marginBottom: -6,
   },
   taskDescription: {
     fontSize: wp(3.5),
@@ -171,13 +273,11 @@ const styles = StyleSheet.create({
     fontSize: wp(3.5),
     color: '#2575fc',
     fontFamily: FONT.PoppinsRegular,
-    marginBottom: -4,
   },
   taskDeadline: {
     fontSize: wp(3),
     color: '#666',
     fontFamily: FONT.PoppinsRegular,
-    marginBottom: -4,
   },
   emptyColumn: {
     alignItems: 'center',

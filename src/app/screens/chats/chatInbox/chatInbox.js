@@ -7,6 +7,7 @@ import {
   Text,
   StatusBar,
   Platform,
+  SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
 import {
@@ -18,46 +19,15 @@ import {
   Actions,
 } from 'react-native-gifted-chat';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../../components/constants/colors';
 
 export default function ChatInbox({route, navigation}) {
   const {user} = route.params;
   const [messages, setMessages] = useState([]);
-  const chatRef = useRef(null);
-
-  // Set navigation options
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      header: () => (
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="white" />
-          </TouchableOpacity>
-          <Image source={{uri: user.avatar}} style={styles.headerAvatar} />
-          <View style={styles.headerText}>
-            <Text style={styles.headerName}>{user.name}</Text>
-            <Text style={styles.headerStatus}>
-              {user.isOnline ? 'online' : 'last seen recently'}
-            </Text>
-          </View>
-          <View style={styles.headerActions}>
-            <TouchableOpacity style={styles.actionButton}>
-              <Ionicons name="search" size={20} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <Ionicons name="ellipsis-vertical" size={20} color="white" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      ),
-    });
-  }, [navigation, user]);
 
   useEffect(() => {
-    setMessages([
+    const initialMessages = [
       {
         _id: 1,
         text: 'Hello there!',
@@ -80,7 +50,8 @@ export default function ChatInbox({route, navigation}) {
         createdAt: new Date(Date.now() - 1000 * 60 * 5),
         user,
       },
-    ]);
+    ];
+    setMessages(initialMessages.reverse());
   }, [user]);
 
   const onSend = useCallback((messages = []) => {
@@ -108,7 +79,7 @@ export default function ChatInbox({route, navigation}) {
   const renderSend = props => (
     <Send {...props} containerStyle={styles.sendContainer}>
       <View style={styles.sendButton}>
-        <Ionicons name="send" size={20} color="white" />
+        <Ionicons name="send" size={16} color="white" />
       </View>
     </Send>
   );
@@ -133,39 +104,68 @@ export default function ChatInbox({route, navigation}) {
     <Actions
       {...props}
       containerStyle={styles.actionsContainer}
-      icon={() => <Ionicons name="attach" size={22} color="#075e54" />}
+      icon={() => <Ionicons name="attach" size={22} color={COLORS.btnColor} />}
     />
   );
 
   return (
-    <View style={styles.container}>
-      <GiftedChat
-        ref={chatRef}
-        messages={messages}
-        onSend={msgs => onSend(msgs)}
-        user={{_id: 1}}
-        renderBubble={renderBubble}
-        renderSend={renderSend}
-        renderInputToolbar={renderInputToolbar}
-        renderComposer={renderComposer}
-        renderActions={renderActions}
-        alwaysShowSend
-        scrollToBottom
-        showUserAvatar={false}
-        scrollToBottomComponent={() => (
-          <View style={styles.scrollToBottom}>
-            <Ionicons name="chevron-down" size={18} color="#075e54" />
-          </View>
-        )}
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar
+        backgroundColor={COLORS.black}
+        barStyle="light-content"
+        animated
       />
-    </View>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          <Image source={{uri: user.avatar}} style={styles.headerAvatar} />
+          <View style={styles.headerText}>
+            <Text style={styles.headerName}>{user.name}</Text>
+            <Text style={styles.headerStatus}>
+              {user.isOnline ? 'online' : 'last seen recently'}
+            </Text>
+          </View>
+          <View style={styles.headerActions}>
+            <TouchableOpacity style={styles.actionButton}>
+              <Ionicons name="search" size={20} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.actionButton}>
+              <Ionicons name="ellipsis-vertical" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}>
+          <GiftedChat
+            messages={messages}
+            onSend={msgs => onSend(msgs)}
+            user={{_id: 1}}
+            renderBubble={renderBubble}
+            renderSend={renderSend}
+            renderInputToolbar={renderInputToolbar}
+            renderComposer={renderComposer}
+            renderActions={renderActions}
+            alwaysShowSend
+            scrollToBottom
+            keyboardShouldPersistTaps="handled"
+            showUserAvatar={false}
+            renderAvatar={() => null}
+          />
+        </KeyboardAvoidingView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight + 10,
   },
   header: {
     flexDirection: 'row',
@@ -204,9 +204,8 @@ const styles = StyleSheet.create({
   inputToolbar: {
     backgroundColor: 'white',
     borderTopWidth: 0,
-    paddingVertical: 4,
+    paddingVertical: 6,
     paddingHorizontal: 8,
-    marginBottom: Platform.OS === 'ios' ? 0 : -20,
   },
   composer: {
     backgroundColor: '#f5f5f5',
@@ -226,7 +225,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#075e54',
+    backgroundColor: COLORS.btnColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -234,6 +233,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 4,
+    // backgroundColor: 'red',
+    top: 2,
   },
   scrollToBottom: {
     width: 28,

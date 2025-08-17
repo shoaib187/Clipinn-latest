@@ -36,11 +36,9 @@ export default function AttendanceHistory({navigation}) {
         flex: 1,
       }}>
       <StatusBar
-        translucent={true}
-        animated
         backgroundColor={COLORS.black}
-        barStyle={'light-content'}
-        showHideTransition={'fade'}
+        barStyle="light-content"
+        animated
       />
       <Header navigation={navigation} title="Attendance History" />
       <Animated.View
