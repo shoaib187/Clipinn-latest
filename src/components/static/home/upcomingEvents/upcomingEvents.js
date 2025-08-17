@@ -30,15 +30,13 @@ export default function UpcomingEvents() {
 }
 
 const styles = StyleSheet.create({
-  // Upcoming Events
   eventsContainer: {
-    // paddingHorizontal: 20,
     marginTop: 20,
   },
   eventCard: {
     backgroundColor: 'white',
     borderRadius: 12,
-    padding: 15,
+    marginVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
   },

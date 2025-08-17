@@ -183,8 +183,7 @@ const Home = ({navigation}) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    // backgroundColor: COLORS.white,
-    // paddingTop: StatusBar.currentHeight || 0,
+    backgroundColor: COLORS.white,
   },
   header: {
     position: 'absolute',

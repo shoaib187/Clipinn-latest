@@ -114,6 +114,7 @@ export default function RemainingTasks() {
     <View style={styles.tasksTab}>
       <ScrollView
         horizontal
+        contentContainerStyle={{paddingLeft: 14}}
         scrollEventThrottle={16}
         showsHorizontalScrollIndicator={false}>
         {Object.keys(tasks).map(column => (
@@ -199,10 +200,10 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   column: {
-    width: width * 0.85,
+    width: width * 0.75,
     backgroundColor: '#fff',
     borderRadius: 12,
-    marginHorizontal: 6,
+    marginRight: 12,
     padding: 14,
     borderWidth: 1,
     borderColor: '#e0e0e0',

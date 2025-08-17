@@ -3,25 +3,19 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   SafeAreaView,
-  StatusBar,
   Dimensions,
   Animated,
 } from 'react-native';
-
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 
 import Overview from '../../../../components/static/tasks/overview/overview';
 import RemainingTasks from '../../../../components/static/tasks/task/remainingTasks';
 import Notes from '../../../../components/static/tasks/notes/notes';
-import TaskActionModal from '../../../../components/static/tasks/taskActionModal/taskActionModal';
-import AddTaskModal from '../../../../components/static/tasks/addTaskModal/addTaskModal';
 import {COLORS} from '../../../../components/constants/colors';
 import {wp} from '../../../../components/constants/responsiveSize';
 import BackButton from '../../../../components/common/button/backButton';
 import {FONT} from '../../../../components/constants/font';
-import AskQuestion from '../../../../components/common/askQuestion/askQuestion';
 
 const {height} = Dimensions.get('window');
 const ITEM_HEIGHT = height * 0.2;
@@ -60,25 +54,11 @@ export default function ProjectDetails({navigation}) {
         navigation={navigation}
         style={{position: 'absolute'}}
       />
-      <View style={{paddingHorizontal: 14, paddingVertical: 24, marginTop: 18}}>
-        <Text
-          numberOfLines={1}
-          style={{
-            color: '#fff',
-            fontSize: wp(7),
-            fontFamily: FONT.PoppinsSemiBold,
-            marginBottom: -4,
-          }}>
+      <View style={styles.info}>
+        <Text numberOfLines={1} style={styles.title}>
           E-Commerce Mobile App
         </Text>
-        <Text
-          numberOfLines={1}
-          style={{
-            color: '#fff',
-            fontSize: wp(4),
-            fontFamily: FONT.PoppinsRegular,
-            marginBottom: -6,
-          }}>
+        <Text numberOfLines={1} style={styles.description}>
           E-Commerce Mobile App
         </Text>
       </View>
@@ -157,4 +137,17 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     elevation: 0,
   },
+  title: {
+    color: '#fff',
+    fontSize: wp(7),
+    fontFamily: FONT.PoppinsSemiBold,
+    marginBottom: -4,
+  },
+  description: {
+    color: '#fff',
+    fontSize: wp(4),
+    fontFamily: FONT.PoppinsRegular,
+    marginBottom: -6,
+  },
+  info: {paddingHorizontal: 14, paddingVertical: 24, marginTop: 18},
 });
