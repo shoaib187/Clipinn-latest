@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { wp } from '../../constants/responsiveSize';
-import { FONT } from '../../constants/font';
-import { COLORS } from '../../constants/colors';
+import {wp} from '../../constants/responsiveSize';
+import {FONT} from '../../constants/font';
+import {COLORS} from '../../constants/colors';
 
 export default function TabHeader({
   navigation,
@@ -14,8 +14,7 @@ export default function TabHeader({
   return (
     <View
       onLayout={e => setFinalHeight(e.nativeEvent.layout.height)}
-      style={[styles.headerContainer, style]}
-    >
+      style={[styles.headerContainer, style]}>
       <View style={styles.header}>
         <View>
           <Text style={styles.name}>Hey Shabiii,</Text>
@@ -25,7 +24,9 @@ export default function TabHeader({
         </View>
       </View>
 
-      <TouchableOpacity style={styles.bellIcon}>
+      <TouchableOpacity
+        style={styles.bellIcon}
+        onPress={() => navigation.navigate('Notifications')}>
         <Ionicons name="notifications-outline" size={24} color="#fff" />
       </TouchableOpacity>
     </View>

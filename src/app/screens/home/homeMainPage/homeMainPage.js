@@ -1,326 +1,206 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   View,
-  Text,
-  SafeAreaView,
   StyleSheet,
-  Image,
-  TouchableOpacity,
+  SafeAreaView,
   StatusBar,
+  Animated,
+  Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS} from '../../../../components/constants/colors';
-import {wp} from '../../../../components/constants/responsiveSize';
-import {FONT} from '../../../../components/constants/font';
-import Button from '../../../../components/common/button/button';
-import Donut from '../../../../components/common/donut/donut';
-// import CheckInOutSheet from '../../../../components/common/bottomsheet/bottomSheet';
+import TabHeader from '../../../../components/common/tabHeader/tabHeader';
+import StatsCards from '../../../../components/static/home/statsCards/statsCards';
+import Categories from '../../../../components/categories/categories';
+import QuickActions from '../../../../components/static/home/quickActions/quickActions';
+import RecentActivities from '../../../../components/static/home/recentActivities/recentActivities';
+import UpcomingEvents from '../../../../components/static/home/upcomingEvents/upcomingEvents';
+const {height} = Dimensions.get('window');
+const ITEM_HEIGHT = height * 0.2;
 
-export default function HomeMainPage() {
-  const [isCheckIn, setIsCheckIn] = useState(false);
+const HomeMainPage = ({navigation}) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const categories = [
+    {
+      id: 'dashboard',
+      name: 'Dashboard',
+      icon: 'dashboard',
+      bgColor: 'rgba(63, 81, 181, 0.08)', // Light indigo
+      activeBgColor: '#3F51B5', // Active state color
+    },
+    {
+      id: 'attendance',
+      name: 'Attendance',
+      icon: 'fingerprint',
+      bgColor: 'rgba(76, 175, 80, 0.08)', // Light green
+      activeBgColor: '#4CAF50',
+    },
+    {
+      id: 'leave',
+      name: 'Leave',
+      icon: 'beach-access',
+      bgColor: 'rgba(33, 150, 243, 0.08)', // Light blue
+      activeBgColor: '#2196F3',
+    },
+    {
+      id: 'payroll',
+      name: 'Payroll',
+      icon: 'attach-money',
+      bgColor: 'rgba(255, 193, 7, 0.08)', // Light amber
+      activeBgColor: '#FFC107',
+    },
+    {
+      id: 'projects',
+      name: 'Projects',
+      icon: 'work',
+      bgColor: 'rgba(233, 30, 99, 0.08)', // Light pink
+      activeBgColor: '#E91E63',
+    },
+    {
+      id: 'performance',
+      name: 'Performance',
+      icon: 'star-rate',
+      bgColor: 'rgba(255, 152, 0, 0.08)', // Light orange
+      activeBgColor: '#FF9800',
+    },
+    {
+      id: 'meetings',
+      name: 'Meetings',
+      icon: 'meeting-room',
+      bgColor: 'rgba(156, 39, 176, 0.08)', // Light purple
+      activeBgColor: '#9C27B0',
+    },
+    {
+      id: 'expenses',
+      name: 'Expenses',
+      icon: 'receipt',
+      bgColor: 'rgba(0, 150, 136, 0.08)', // Light teal
+      activeBgColor: '#009688',
+    },
+  ];
+  const quickActions = [
+    {
+      id: 'punch',
+      title: 'Punch In/Out',
+      icon: 'touch-app',
+      color: '#4CAF50',
+      bgColor: 'rgba(76, 175, 80, 0.04)', // Very light green
+    },
+    {
+      id: 'ApplyForLeave',
+      title: 'Apply Leave',
+      icon: 'flight-takeoff',
+      color: '#FF9800',
+      bgColor: 'rgba(255, 152, 0, 0.08)', // Very light orange
+    },
+    {
+      id: 'expense',
+      title: 'Add Expense',
+      icon: 'receipt',
+      color: '#9C27B0',
+      bgColor: 'rgba(156, 39, 176, 0.08)', // Very light purple
+    },
+    {
+      id: 'ticket',
+      title: 'Raise Ticket',
+      icon: 'help-outline',
+      color: '#F44336',
+      bgColor: 'rgba(244, 67, 54, 0.08)', // Very light red
+    },
+  ];
+  const recentActivities = [
+    {
+      id: 1,
+      type: 'leave',
+      title: 'Leave Approved',
+      description: 'Your annual leave request has been approved',
+      time: '2 hours ago',
+      icon: 'check-circle',
+      color: '#4CAF50',
+    },
+    {
+      id: 2,
+      type: 'payroll',
+      title: 'Salary Credited',
+      description: 'Salary for June has been credited to your account',
+      time: '1 day ago',
+      icon: 'account-balance-wallet',
+      color: '#2196F3',
+    },
+    {
+      id: 3,
+      type: 'meeting',
+      title: 'Team Meeting',
+      description: 'Scheduled for tomorrow at 11:00 AM',
+      time: '3 days ago',
+      icon: 'event',
+      color: '#FF9800',
+    },
+  ];
+
+  const [finalHeight, setFinalHeight] = useState(null);
+  // Animate from 60 → 0 height on scroll
+  const animatedHeight = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [ITEM_HEIGHT, finalHeight],
+    extrapolate: 'clamp',
+  });
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
       <StatusBar
         backgroundColor={COLORS.black}
         barStyle="light-content"
         animated
       />
-      <View
-        onLayout={e => console.log(e.nativeEvent.layout.height)}
-        style={styles.animatedWrapper}>
-        <View style={styles.headerWrapper}>
-          <View style={styles.left}>
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg',
-              }}
-              style={styles.profileImage}
-            />
-            <View style={styles.details}>
-              <Text style={styles.name}>Muhammad Shoaib</Text>
-              <Text style={styles.role}>Front End Developer</Text>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.icon}>
-            <Icon name="notifications-outline" size={22} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.attendaceCard}>
-        <Text style={styles.day}>Monday 18, Nov 2024</Text>
-        <Text style={styles.timeSpent}>Your last checkin was 2 hours ago</Text>
-        <View style={styles.barWrapper}>
-          {[0, 1, 2, 3, 4, 5, 6].map((item, index, array) => {
-            const today = new Date().getDay();
-            const isTodayOrBefore = item <= today;
 
-            return (
-              <View
-                key={index}
-                style={[
-                  styles.bar,
-                  index !== array.length - 1 && {marginRight: 4},
-                  {
-                    backgroundColor: isTodayOrBefore ? COLORS.btnColor : '#eee',
-                  },
-                ]}
-              />
-            );
-          })}
-        </View>
-        <View style={styles.shiftTime}>
-          <Text style={styles.timeIn}>09:00 AM</Text>
-          <Text style={styles.timeIn}>06:00 PM</Text>
-        </View>
-        {/* <View style={styles.attendaceDonutWrapper}>
-          <View>
-            <Text style={styles.attendance}>Attendance Overview</Text>
-            <Text style={styles.month}>Monhtly</Text>
-          </View>
-          <Donut max={100} percentage={60} color={COLORS.btnColor} />
-        </View> */}
-        {isCheckIn ? (
-          <View style={styles.btnWrapper}>
-            <TouchableOpacity style={styles.checkInButton}>
-              <Fontisto
-                name="coffeescript"
-                size={16}
-                color="#111"
-                style={styles.icon}
-              />
-              <Text style={styles.btnText}>Break Time</Text>
-            </TouchableOpacity>
+      {/* animated, fixed header */}
+      <Animated.View
+        style={[styles.header, {position: 'absolute', height: animatedHeight}]}
+      />
+      <TabHeader navigation={navigation} setFinalHeight={setFinalHeight} />
 
-            <TouchableOpacity
-              onPress={() => setIsCheckIn(false)}
-              style={[styles.checkInButton, styles.checkOutButton]}>
-              <Octicons
-                name="sign-out"
-                size={18}
-                color="#fff"
-                style={styles.icon}
-              />
-              <Text style={[styles.btnText, {color: COLORS.white}]}>
-                Check Out
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <Button
-            textStyle={{top: 0, fontSize: wp(4)}}
-            onPress={() => setIsCheckIn(true)}
-            title="Check In"
-            style={{borderRadius: 6, height: 44, marginTop: 12}}
-            iconName="log-in-outline"
-          />
-        )}
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 12,
-            marginTop: 16,
-          }}>
-          <View style={styles.card}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-              <Fontisto name="clock" size={20} />
-              <Text
-                style={{
-                  fontFamily: FONT.PoppinsRegular,
-                  top: 3,
-                  fontSize: wp(3.6),
-                }}>
-                Working hours
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontFamily: FONT.PoppinsSemiBold,
-                top: 3,
-                fontSize: wp(4.6),
-              }}>
-              01:00 Hrs
-            </Text>
-          </View>
-          <View style={styles.card}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-              <Fontisto name="clock" size={20} />
-              <Text
-                style={{
-                  fontFamily: FONT.PoppinsRegular,
-                  top: 3,
-                  fontSize: wp(3.6),
-                }}>
-                Working hours
-              </Text>
-            </View>
-            <Text
-              style={{
-                fontFamily: FONT.PoppinsSemiBold,
-                top: 3,
-                fontSize: wp(4.6),
-              }}>
-              01:00 Hrs
-            </Text>
-          </View>
+      {/* Scrollable content */}
+      <Animated.ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}>
+        <View style={{paddingHorizontal: 14}}>
+          <StatsCards />
         </View>
-        <View style={styles.timing}>
-          <Text style={styles.checkIn}>Check In</Text>
-          <Text style={styles.timeIn}>06:00 PM</Text>
-        </View>
-        <View style={styles.timing}>
-          <Text style={styles.checkIn}>Break</Text>
-          <Text style={styles.timeIn}>12:00 PM</Text>
-        </View>
-        <View style={styles.timing}>
-          <Text style={styles.checkIn}>Check Out</Text>
-          <Text style={styles.timeIn}>06:00 PM</Text>
-        </View>
-      </View>
-      {/* <CheckInOutSheet /> */}
+        <Categories categories={categories} />
+        <QuickActions navigation={navigation} quickActions={quickActions} />
+        <RecentActivities recentActivities={recentActivities} />
+        <UpcomingEvents recentActivities={recentActivities} />
+      </Animated.ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    // paddingTop: StatusBar.currentHeight,
-  },
-  animatedWrapper: {
-    backgroundColor: COLORS.btnColor,
-    paddingHorizontal: 14,
-    paddingVertical: 20,
-    height: 200,
-  },
-  headerWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  profileImage: {
-    width: wp(12),
-    height: wp(12),
-    borderRadius: wp(10),
-  },
-  name: {
-    fontFamily: FONT.PoppinsMedium,
-    color: COLORS.white,
-    fontSize: wp(4),
-  },
-  role: {
-    fontFamily: FONT.PoppinsLight,
-    fontSize: 14,
-    color: COLORS.whiteColor,
-  },
-  attendaceCard: {
-    position: 'absolute',
-    zIndex: 10,
-    top: 130,
     backgroundColor: COLORS.white,
+  },
+  header: {
+    position: 'absolute',
+    // top: StatusBar.currentHeight || 0,
+    left: 0,
+    right: 0,
+    backgroundColor: COLORS.black,
+  },
+  scrollContainer: {
+    // marginTop: 14,
+    // paddingHorizontal: 14,
+    backgroundColor: COLORS.white,
+    paddingBottom: 20,
+    marginHorizontal: 14,
+    paddingTop: 14,
     borderRadius: 8,
-    width: wp(92),
-    alignSelf: 'center',
-    padding: 16,
-  },
-  barWrapper: {
-    flexDirection: 'row',
-    marginVertical: 12,
-  },
-  bar: {
-    flex: 1,
-    height: 5,
-    backgroundColor: '#4f46e5',
-    borderRadius: 4,
-  },
-  shiftTime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  btnWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 12,
-    gap: 14,
-  },
-  checkInButton: {
-    // width:wp(40),
-    flex: 1,
-    height: 44,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: COLORS.slateColor,
-    flexDirection: 'row',
-    gap: 6,
-  },
-  checkOutButton: {
-    backgroundColor: 'chocolate',
-    borderWidth: 0,
-  },
-  timeIn: {
-    fontFamily: FONT.PoppinsSemiBold,
-    fontSize: wp(3.5),
-  },
-  btnText: {
-    fontFamily: FONT.PoppinsRegular,
-    top: 2,
-  },
-  day: {
-    fontFamily: FONT.PoppinsMedium,
-    // marginBottom: 2,
-  },
-  timeSpent: {
-    fontFamily: FONT.PoppinsRegular,
-    color: COLORS.paraColor,
-  },
-  card: {
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    padding: 12,
-    borderWidth: 1.5,
-    borderColor: COLORS.bgColor,
-  },
-  timing: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 8,
-    paddingHorizontal: 4,
-  },
-  checkIn: {
-    fontFamily: FONT.PoppinsMedium,
-    color: COLORS.paraColor,
-  },
-  attendaceDonutWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#f5f5f5',
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    paddingVertical: 6,
-    marginVertical: 6,
-  },
-  attendance: {
-    fontFamily: FONT.PoppinsMedium,
-  },
-  month: {
-    fontFamily: FONT.PoppinsRegular,
-    color: COLORS.paraColor,
   },
 });
+
+export default HomeMainPage;

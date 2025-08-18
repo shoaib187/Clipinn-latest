@@ -110,14 +110,10 @@ export default function Notes() {
             Your notes will appear here
           </Text>
           <TouchableOpacity style={styles.addNoteButton} onPress={openModal}>
-            <LinearGradient
-              colors={['#5E8BFF', '#3B6AFF']}
-              style={styles.gradientButton}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}>
+            <View style={styles.gradientButton}>
               <Text style={styles.addNoteButtonText}>Create First Note</Text>
               <MaterialIcons name="add" size={20} color="#fff" />
-            </LinearGradient>
+            </View>
           </TouchableOpacity>
         </ScrollView>
       ) : (
@@ -244,6 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: COLORS.btnColor,
   },
   addNoteButtonText: {
     color: '#fff',

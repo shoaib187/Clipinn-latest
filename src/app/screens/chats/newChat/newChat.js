@@ -27,7 +27,7 @@ export default function NewChat({navigation}) {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}>
-          <Feather name="chevron-left" size={28} color="#fff" />
+          <Feather name="arrow-left" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Start chat</Text>
         <View style={styles.headerRight} />

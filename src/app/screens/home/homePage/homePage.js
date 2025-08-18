@@ -1,10 +1,6 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import HomeMainPage from '../homeMainPage/homeMainPage'
+import React from 'react';
+import HomeMainPage from '../homeMainPage/homeMainPage';
 
-
-export default function HomePage() {
-  return (
-    <HomeMainPage/>
-  )
+export default function HomePage({navigation}) {
+  return <HomeMainPage navigation={navigation} />;
 }

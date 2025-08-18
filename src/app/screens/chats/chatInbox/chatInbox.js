@@ -1,4 +1,5 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
+
 import {
   View,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
+
 import {
   GiftedChat,
   Bubble,
@@ -19,7 +21,6 @@ import {
   Actions,
 } from 'react-native-gifted-chat';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS} from '../../../../components/constants/colors';
 
 export default function ChatInbox({route, navigation}) {
@@ -213,8 +214,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 15,
     color: '#333',
+    height: 40,
     minHeight: 40,
     maxHeight: 120,
+    marginRight: 8,
   },
   sendContainer: {
     justifyContent: 'center',

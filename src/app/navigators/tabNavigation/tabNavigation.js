@@ -5,16 +5,17 @@ import {
   NavigationContainer,
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
-
 import LinearGradient from 'react-native-linear-gradient';
 import {Image, StyleSheet, View} from 'react-native';
+
+import {FONT} from '../../../components/constants/font';
 import {COLORS} from '../../../components/constants/colors';
 import {wp} from '../../../components/constants/responsiveSize';
-import {FONT} from '../../../components/constants/font';
-import Home from '../../screens/home/homeMainPage/home';
-import {AttendanceStack} from '../attendanceStack/attendanceStack';
+
 import {TaskStack} from '../projectStack/projectStack';
 import {ChatStack} from '../chatStack/chatStack';
+import {HomeStack} from '../homeStack/homeStack';
+import {AttendanceStack} from '../attendanceStack/attendanceStack';
 
 const IconImage = ({icon}) => (
   <Image source={icon} style={styles.icon} resizeMode="cover" />
@@ -30,6 +31,8 @@ const hiddenRoutes = [
   'CreateProject',
   'ChatInbox',
   'NewChat',
+  'Notifications',
+  'ApplyForLeave',
 ];
 
 const TabNavigation = () => {
@@ -105,7 +108,7 @@ const TabNavigation = () => {
             },
           };
         }}>
-        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Home" component={HomeStack} />
         <Tab.Screen name="Attendance" component={AttendanceStack} />
         {/* <Tab.Screen name="FacialRecognition" component={FacialRecognition} /> */}
         <Tab.Screen name="Projects" component={TaskStack} />

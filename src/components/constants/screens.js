@@ -5,14 +5,19 @@ import MarkWithQrCode from '../../app/screens/attendance/markWithQrCode/markWith
 import ChatHomePage from '../../app/screens/chats/chatHomePage/chatHomePage';
 import ChatInbox from '../../app/screens/chats/chatInbox/chatInbox';
 import NewChat from '../../app/screens/chats/newChat/newChat';
-import Home from '../../app/screens/home/homeMainPage/home';
+import HomePage from '../../app/screens/home/homePage/homePage';
+import ApplyForLeave from '../../app/screens/notifications/applyForLeave/applyForLeave';
+
+import Notifications from '../../app/screens/notifications/notifications';
 import CreateProject from '../../app/screens/projects/createProject/createProject';
 import ProjectDetails from '../../app/screens/projects/projectDetails/projectDetails';
 import ProjectHomePage from '../../app/screens/projects/projectHomePage/projectHomePage';
 
 export const screens = {
   // Home screens
-  Home,
+  Notifications,
+  HomePage,
+  ApplyForLeave,
   // Attendance stack
   AttendanceHomePage,
   AttendanceHistory,

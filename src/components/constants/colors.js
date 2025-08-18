@@ -15,4 +15,5 @@ export const COLORS = {
   black: '#222', // custom dark
   bgColor: '#eee',
   lightGray: '#334155',
+  red: 'red',
 };

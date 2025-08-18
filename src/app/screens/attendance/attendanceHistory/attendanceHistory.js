@@ -32,7 +32,6 @@ export default function AttendanceHistory({navigation}) {
     <SafeAreaView
       style={{
         backgroundColor: '#f6f6f6',
-        paddingTop: StatusBar.currentHeight,
         flex: 1,
       }}>
       <StatusBar

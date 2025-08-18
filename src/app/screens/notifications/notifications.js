@@ -8,8 +8,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {COLORS} from '../../../components/constants/colors';
 
-const Notifications = () => {
+export default function Notifications({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
   const [notifications, setNotifications] = useState([
     {
@@ -113,7 +114,12 @@ const Notifications = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Notifications</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Notifications</Text>
+        </View>
         <TouchableOpacity>
           <Text style={styles.headerAction}>Mark all as read</Text>
         </TouchableOpacity>
@@ -155,7 +161,7 @@ const Notifications = () => {
       </ScrollView>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -169,12 +175,12 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e9ecef',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.black,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#212529',
+    color: '#fff',
   },
   headerAction: {
     fontSize: 14,
@@ -221,10 +227,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#0d6efd',
+    backgroundColor: COLORS.btnColor,
     marginLeft: 8,
     marginTop: 8,
   },
 });
-
-export default Notifications;

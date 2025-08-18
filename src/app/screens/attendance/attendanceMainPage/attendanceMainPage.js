@@ -125,11 +125,11 @@ export default function AttendanceMainPage({navigation}) {
         <View style={styles.timeAlign}>
           <Text style={styles.time}>09:00 AM</Text>
           <Text style={styles.date}>Oct 26, 2022 - Wednesday</Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.historyButton}
             onPress={() => navigation.navigate('AttendanceHistory')}>
             <Text style={styles.historyButtonText}>View history</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <CheckInButton onPress={handleCheck} />
         </View>
 
@@ -168,7 +168,11 @@ export default function AttendanceMainPage({navigation}) {
             <Text style={styles.checkLabel}>Total Hours</Text>
           </View>
         </View>
-        <Button title={'View History'} style={{marginTop: 42}} />
+        <Button
+          onPress={() => navigation.navigate('AttendanceHistory')}
+          title={'View History'}
+          style={{marginTop: 42}}
+        />
         <RBSheet
           ref={bottomSheetRef}
           height={320}
