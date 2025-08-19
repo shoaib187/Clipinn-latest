@@ -9,6 +9,11 @@ import HomePage from '../../app/screens/home/homePage/homePage';
 import ApplyForLeave from '../../app/screens/notifications/applyForLeave/applyForLeave';
 
 import Notifications from '../../app/screens/notifications/notifications';
+import About from '../../app/screens/profile/about/about';
+import PersonalInfo from '../../app/screens/profile/personalInfo/personalInfo';
+import PrivacyPolicy from '../../app/screens/profile/privacyPolicy/privacyPolicy';
+import ProfileHomePage from '../../app/screens/profile/profileHomePage/profileHomePage';
+import Support from '../../app/screens/profile/support/support';
 import CreateProject from '../../app/screens/projects/createProject/createProject';
 import ProjectDetails from '../../app/screens/projects/projectDetails/projectDetails';
 import ProjectHomePage from '../../app/screens/projects/projectHomePage/projectHomePage';
@@ -32,4 +37,11 @@ export const screens = {
   ChatHomePage,
   ChatInbox,
   NewChat,
+
+  // profile screens
+  ProfileHomePage,
+  About,
+  PersonalInfo,
+  PrivacyPolicy,
+  Support,
 };

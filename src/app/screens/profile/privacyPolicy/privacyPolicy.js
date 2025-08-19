@@ -25,10 +25,7 @@ const PrivacyPolicy = ({navigation}) => {
         barStyle="light-content"
         animated
       />
-      <ProfileHeader
-        title={'Privacy policy'}
-        onPress={() => navigation.goBack()}
-      />
+      <ProfileHeader title={'Privacy policy'} navigation={navigation} />
       <ScrollView contentContainerStyle={{paddingHorizontal: 14}}>
         <Text style={styles.header}>Privacy Policy</Text>
         <Text style={styles.lastUpdated}>Last updated: June 15, 2024</Text>

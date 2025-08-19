@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {AppNavigator} from './src/app/navigators/appNavigator/appNavigator';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {View, StyleSheet, SafeAreaView} from 'react-native';
 import Splash from './src/app/screens/splash/splash';
+
 import ProfileMainPage from './src/app/screens/profile/profileMainPage/profileMainPage';
 import ProfileHomePage from './src/app/screens/profile/profileHomePage/profileHomePage';
 import About from './src/app/screens/profile/about/about';
@@ -13,19 +14,6 @@ import BootSplash from 'react-native-bootsplash';
 
 export default function App() {
   const [isSplashFinished, setIsSplashFinished] = useState(false);
-
-  // useEffect(() => {
-  //   const init = async () => {
-  //     // …do multiple sync or async tasks
-  //     setTimeout(() => {}, 4000);
-  //   };
-
-  //   init().finally(async () => {
-  //     await BootSplash.hide({fade: true});
-  //     console.log('BootSplash has been hidden successfully');
-  //   });
-  // }, []);
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <GestureHandlerRootView style={{flex: 1}}>
@@ -37,6 +25,5 @@ export default function App() {
         )}
       </GestureHandlerRootView>
     </SafeAreaView>
-    // <ProfileHomePage />
   );
 }

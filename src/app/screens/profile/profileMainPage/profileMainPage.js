@@ -6,7 +6,7 @@ import {COLORS} from '../../../../components/constants/colors';
 import {FONT} from '../../../../components/constants/font';
 import LargeButton from '../../../../components/common/largeButton/largeButton';
 
-const ProfileMainPage = () => {
+const ProfileMainPage = ({navigation}) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={COLORS.black} barStyle="light-content" />
@@ -31,10 +31,26 @@ const ProfileMainPage = () => {
       </View>
 
       {/* Menu Buttons */}
-      <LargeButton icon="user" title="Personal Info" />
-      <LargeButton icon="info" title="About Clipinn" />
-      <LargeButton icon="headphones" title="Support" />
-      <LargeButton icon="shield" title="Privacy Policy" />
+      <LargeButton
+        onPress={() => navigation.navigate('PersonalInfo')}
+        icon="user"
+        title="Personal Info"
+      />
+      <LargeButton
+        onPress={() => navigation.navigate('About')}
+        icon="info"
+        title="About Clipinn"
+      />
+      <LargeButton
+        onPress={() => navigation.navigate('Support')}
+        icon="headphones"
+        title="Support"
+      />
+      <LargeButton
+        onPress={() => navigation.navigate('PrivacyPolicy')}
+        icon="shield"
+        title="Privacy Policy"
+      />
       <LargeButton
         icon="log-out"
         title="Logout"

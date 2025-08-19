@@ -3,11 +3,11 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {COLORS} from '../../constants/colors';
 
-export default function ProfileHeader({title, onPress}) {
+export default function ProfileHeader({title, onPress, navigation}) {
   return (
     <View style={styles.header}>
-      <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-        <TouchableOpacity onPress={onPress}>
+      <View style={{flexDirection: 'row', alignItems: 'center', gap: 12}}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>{title}</Text>

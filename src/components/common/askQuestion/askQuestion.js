@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     // elevation: 1,
     borderWidth: 1,
     borderColor: '#E2E8F0',
+    marginBottom: 12,
   },
   sectionHeader: {
     flexDirection: 'row',

@@ -16,6 +16,7 @@ import {TaskStack} from '../projectStack/projectStack';
 import {ChatStack} from '../chatStack/chatStack';
 import {HomeStack} from '../homeStack/homeStack';
 import {AttendanceStack} from '../attendanceStack/attendanceStack';
+import {ProfileStack} from '../profileStack/profileStack';
 
 const IconImage = ({icon}) => (
   <Image source={icon} style={styles.icon} resizeMode="cover" />
@@ -113,6 +114,7 @@ const TabNavigation = () => {
         {/* <Tab.Screen name="FacialRecognition" component={FacialRecognition} /> */}
         <Tab.Screen name="Projects" component={TaskStack} />
         <Tab.Screen name="Chats" component={ChatStack} />
+        <Tab.Screen name="Profile" component={ProfileStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );

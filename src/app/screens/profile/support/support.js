@@ -61,10 +61,7 @@ const Support = ({navigation}) => {
         barStyle="light-content"
         animated
       />
-      <ProfileHeader
-        title={'Support center'}
-        onPress={() => navigation.goBack()}
-      />
+      <ProfileHeader title={'Support center'} navigation={navigation} />
 
       {/* Contact Options */}
       <View style={styles.section}>

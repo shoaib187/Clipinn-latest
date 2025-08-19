@@ -33,7 +33,7 @@ const About = ({navigation}) => {
       />
 
       {/* Header with App Logo */}
-      <ProfileHeader title={'About '} onPress={() => navigation.goBack()} />
+      <ProfileHeader title={'About '} navigation={navigation} />
       {/* App Description */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>About This App</Text>

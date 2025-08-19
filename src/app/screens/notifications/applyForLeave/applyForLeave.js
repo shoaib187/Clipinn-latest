@@ -12,15 +12,16 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ProfileHeader from '../../../../components/common/profileHeader/profileHeader';
 import {COLORS} from '../../../../components/constants/colors';
 import {wp} from '../../../../components/constants/responsiveSize';
+import DescriptionField from '../../../../components/common/descriptionField/descriptionField';
 
-const ApplyForLeave = () => {
+const ApplyForLeave = ({navigation}) => {
   const [leaveType, setLeaveType] = useState('vacation');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -47,7 +48,10 @@ const ApplyForLeave = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfileHeader title={'Apply for Leave'} />
+      <ProfileHeader
+        onPress={() => navigation.goBack()}
+        title={'Apply for Leave'}
+      />
       <StatusBar
         backgroundColor={COLORS.black}
         barStyle="light-content"
@@ -165,20 +169,7 @@ const ApplyForLeave = () => {
               <Icon name="text-box" size={20} color={COLORS.btnColor} />
               <Text style={styles.sectionTitle}>Reason</Text>
             </View>
-            <View style={styles.reasonInputContainer}>
-              <TextInput
-                style={styles.reasonInput}
-                multiline
-                numberOfLines={4}
-                placeholder="Briefly explain the reason for your leave..."
-                placeholderTextColor="#90a4ae"
-                value={reason}
-                onChangeText={setReason}
-              />
-              <View style={styles.charCount}>
-                <Text style={styles.charCountText}>{reason.length}/200</Text>
-              </View>
-            </View>
+            <DescriptionField reason={reason} setReason={setReason} />
           </View>
 
           {/* Submit Button */}
@@ -243,8 +234,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 12,
     // marginBottom: 8,
-    backgroundColor: '#f8fafc',
     borderWidth: 1.5,
+    backgroundColor: '#f8fafc',
     borderColor: '#e6f0ff',
     gap: 8,
   },
@@ -269,9 +260,9 @@ const styles = StyleSheet.create({
   dateInput: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8fafc',
     borderRadius: 12,
     borderWidth: 1.5,
+    backgroundColor: '#f8fafc',
     borderColor: '#e6f0ff',
     flex: 1,
     marginHorizontal: 5,
@@ -302,33 +293,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 12,
   },
-  reasonInputContainer: {
-    borderWidth: 1.5,
-    borderColor: '#e6f0ff',
-    borderRadius: 12,
-    backgroundColor: '#f8fafc',
-    position: 'relative',
-  },
-  reasonInput: {
-    padding: 15,
-    height: 120,
-    textAlignVertical: 'top',
-    color: '#2c3e50',
-    fontSize: 14,
-  },
-  charCount: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 10,
-  },
-  charCountText: {
-    fontSize: 12,
-    color: '#90a4ae',
-  },
+
   submitButton: {
     marginTop: 20,
     borderRadius: 12,

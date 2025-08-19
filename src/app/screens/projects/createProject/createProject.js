@@ -9,9 +9,9 @@ import {
   Animated,
   Alert,
   SafeAreaView,
-  StatusBar,
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
+
 import CreateProjectSection from '../../../../components/common/createProject/createProjectSection';
 import AddNotesSection from '../../../../components/common/addNotes/addNotesSection';
 import AskQuestion from '../../../../components/common/askQuestion/askQuestion';
@@ -83,15 +83,11 @@ export default function CreateProject({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView style={styles.container}>
-        <Animated.View
-          style={[
-            styles.header,
-            // { opacity: fadeAnim }
-          ]}>
+        <Animated.View style={[styles.header]}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.backButton}>
-            <Feather name="chevron-left" size={28} color="#fff" />
+            <Feather name="arrow-left" size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Create New Project</Text>
           <View style={styles.headerRight} />

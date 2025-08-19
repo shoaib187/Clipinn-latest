@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {FONT} from '../../../constants/font';
 import {wp} from '../../../constants/responsiveSize';
 
@@ -16,7 +16,7 @@ export default function RecentActivities({recentActivities, navigation}) {
                 styles.activityIcon,
                 {backgroundColor: `${activity.color}20`},
               ]}>
-              <FontAwesome
+              <MaterialIcons
                 name={activity.icon}
                 size={18}
                 color={activity.color}
