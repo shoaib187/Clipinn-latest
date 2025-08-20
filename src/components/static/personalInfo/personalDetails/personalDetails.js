@@ -1,7 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {COLORS} from '../../../../components/constants/colors';
+
 import {FONT} from '../../../../components/constants/font';
 import {wp} from '../../../../components/constants/responsiveSize';
 

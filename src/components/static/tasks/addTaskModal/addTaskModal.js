@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     paddingHorizontal: 14,
-    maxHeight: '100%',
+    maxHeight: '95%',
   },
   scrollContent: {
     paddingBottom: 12,
@@ -234,6 +234,7 @@ const styles = StyleSheet.create({
   },
   inputGroup: {
     marginBottom: 12,
+    backgroundColor: 'red',
   },
   inputLabel: {
     fontSize: wp(4),
@@ -241,6 +242,7 @@ const styles = StyleSheet.create({
     color: '#555',
     marginBottom: 8,
   },
+
   input: {
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
@@ -251,6 +253,7 @@ const styles = StyleSheet.create({
     height: 45,
     paddingHorizontal: 12,
   },
+
   descriptionInput: {
     height: 100,
     textAlignVertical: 'top',

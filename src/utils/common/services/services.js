@@ -25,17 +25,38 @@ export const formatTime = date => {
 
 export const imagePicker = async () => {
   try {
-    const image = await ImagePicker.openPicker({
+    const images = await ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true,
+      cropping: false, // Typically better to let user choose if they want to crop
       mediaType: 'photo',
       compressImageQuality: 0.8,
+      multiple: true,
+      maxFiles: 20,
     });
-    return image;
+
+    // Return array of images with consistent structure
+    if (Array.isArray(images)) {
+      return images.map(img => ({
+        uri: img.path || img.sourceURL || img.uri,
+        type: img.mime || 'image/jpeg',
+        name: img.filename || `image_${Date.now()}.jpg`,
+      }));
+    }
+
+    // Handle single image case
+    return [
+      {
+        uri: images.path || images.sourceURL || images.uri,
+        type: images.mime || 'image/jpeg',
+        name: images.filename || `image_${Date.now()}.jpg`,
+      },
+    ];
   } catch (error) {
-    console.error('Image picker error:', error);
-    throw error;
+    if (error.code !== 'E_PICKER_CANCELLED') {
+      console.error('Image picker error:', error);
+    }
+    return null;
   }
 };
 

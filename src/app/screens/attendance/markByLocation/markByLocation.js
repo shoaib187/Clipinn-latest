@@ -148,7 +148,7 @@ export default function MarkByLocation() {
   );
 
   return (
-    <SafeAreaView style={{flex: 1, paddingTop: StatusBar.currentHeight}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <MapView
           ref={mapRef}

@@ -34,6 +34,8 @@ const hiddenRoutes = [
   'NewChat',
   'Notifications',
   'ApplyForLeave',
+  'MarkAttendance',
+  'AttendanceHistory',
 ];
 
 const TabNavigation = () => {

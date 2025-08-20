@@ -11,6 +11,11 @@ const HomeStack = () => {
       <Stack.Screen name="HomePage" component={screens.HomePage} />
       <Stack.Screen name="Notifications" component={screens.Notifications} />
       <Stack.Screen name="ApplyForLeave" component={screens.ApplyForLeave} />
+
+      <Stack.Screen
+        name="MarkAttendance"
+        component={screens.AttendanceHomePage}
+      />
     </Stack.Navigator>
   );
 };

@@ -156,7 +156,9 @@ export default function SlideToCheckInOut({onComplete, onConfirmCheck, type}) {
               <TouchableOpacity
                 style={[styles.button, styles.cancelButton]}
                 onPress={handleCancel}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={[styles.buttonText, {color: COLORS.black}]}>
+                  Cancel
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.button, styles.confirmButton]}

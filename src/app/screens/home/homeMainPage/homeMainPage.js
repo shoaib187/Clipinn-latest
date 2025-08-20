@@ -78,9 +78,10 @@ const HomeMainPage = ({navigation}) => {
       activeBgColor: '#009688',
     },
   ];
+
   const quickActions = [
     {
-      id: 'punch',
+      id: 'MarkAttendance',
       title: 'Punch In/Out',
       icon: 'touch-app',
       color: '#4CAF50',
@@ -108,6 +109,7 @@ const HomeMainPage = ({navigation}) => {
       bgColor: 'rgba(244, 67, 54, 0.08)', // Very light red
     },
   ];
+
   const recentActivities = [
     {
       id: 1,
@@ -139,6 +141,7 @@ const HomeMainPage = ({navigation}) => {
   ];
 
   const [finalHeight, setFinalHeight] = useState(null);
+
   // Animate from 60 → 0 height on scroll
   const animatedHeight = scrollY.interpolate({
     inputRange: [0, 100],
